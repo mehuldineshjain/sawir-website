@@ -7,57 +7,40 @@ import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { slugify } from '@utils/slugify'
 
-// Import images directly for optimization
-import projectImage1 from '@assets/images/projects/project-image-1.png'
-import projectImage2 from '@assets/images/projects/project-image-2.png'
-import projectImage3 from '@assets/images/projects/project-image-3.png'
-import projectImage4 from '@assets/images/projects/project-image-4.png'
-import projectImage5 from '@assets/images/projects/project-image-5.png'
-import projectImage6 from '@assets/images/projects/project-image-6.png'
+function getYoutubeThumbnail(url: string): string {
+  const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
+  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : '/placeholder.png'
+}
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const projects = await getCollection('projects')
-  const allTags = projects.map((project) => project.data.tags).flat()
+  const episodes = await getCollection('episodes')
+
+  const allTags = episodes.flatMap((ep) => ep.data.tags)
   const uniqueTagLabels = [...new Set(allTags)].sort((a, b) => a.localeCompare(b))
   const uniqueTags = uniqueTagLabels.map((label) => ({
     label,
     slug: slugify(label),
   }))
 
-  const projectImages = [projectImage1, projectImage2, projectImage3, projectImage4, projectImage5, projectImage6]
-
-  const projectsWithImages = projects.map((project, index) => {
-    return {
-      ...project,
-      featuredImage: projectImages[index % projectImages.length],
-    }
-  })
-
-  // Generate paginated pages for each tag
   const allPaginatedPages = []
 
   for (const tag of uniqueTags) {
-    const filteredProjects = projectsWithImages.filter((project) =>
-      project.data.tags.map((tag) => slugify(tag)).includes(tag.slug),
-    )
+    const filtered = episodes.filter((ep) => ep.data.tags.map((t) => slugify(t)).includes(tag.slug))
 
-    const paginatedPages = paginate(filteredProjects, {
+    const pages = paginate(filtered, {
       pageSize: 6,
       params: { tag: tag.slug },
-      props: {
-        currentTag: tag,
-        uniqueTags,
-      },
+      props: { currentTag: tag, uniqueTags },
     })
 
-    allPaginatedPages.push(...paginatedPages)
+    allPaginatedPages.push(...pages)
   }
 
   return allPaginatedPages
 }) satisfies GetStaticPaths
 
 interface Props {
-  page: Page<CollectionEntry<'projects'> & { featuredImage: any }>
+  page: Page<CollectionEntry<'episodes'>>
   currentTag: { label: string; slug: string }
   uniqueTags: { label: string; slug: string }[]
 }
@@ -66,80 +49,80 @@ const { page, currentTag, uniqueTags } = Astro.props
 ---
 
 <DefaultLayout
-  title={`Portfolio - ${currentTag.label}`}
-  description={`Projects filtered by ${currentTag.label} tag. Discover our work in ${currentTag.label} and related technologies.`}
+  title={`Episodes — ${currentTag.label}`}
+  description={`Episodes tagged with "${currentTag.label}" from South Asian Women in Rare.`}
 >
   <PageHeader
-    title={`Portfolio: ${currentTag.label}`}
-    subtitle={`Showing ${page.total} project${page.total !== 1 ? 's' : ''} tagged with "${currentTag.label}". <a href="/portfolio">View all projects</a> or filter by other tags below.`}
+    title={`Topic: ${currentTag.label}`}
+    subtitle={`${page.total} episode${page.total !== 1 ? 's' : ''} tagged with "${currentTag.label}". <a href="/episodes">View all episodes</a>`}
     bgType="bordered"
-    customBreadcrumbLabels={{
-      [currentTag.slug]: currentTag.label,
-    }}
+    customBreadcrumbLabels={{ [currentTag.slug]: currentTag.label }}
     joinLastBreadcrumb={true}
   />
   <section class="my-12">
     <div class="container">
-      <Heading level="h2" size="h5" class="mb-2">Tags</Heading>
+      <Heading level="h2" size="h5" class="mb-2">All topics</Heading>
       <div class="flex flex-wrap gap-4">
-        <Link href="/portfolio">All projects</Link>
+        <Link href="/episodes">All episodes</Link>
         {
-          uniqueTags.map((tag: { label: string; slug: string }) => {
-            const isCurrentTag = tag.slug === currentTag.slug
-            return isCurrentTag ? (
-              <Link href={'/portfolio/tag/' + tag.slug} disabled class="disabled">
+          uniqueTags.map((tag) => {
+            const isCurrent = tag.slug === currentTag.slug
+            return isCurrent ? (
+              <Link href={`/episodes/tag/${tag.slug}`} disabled class="disabled">
                 {tag.label}
               </Link>
             ) : (
-              <Link href={'/portfolio/tag/' + tag.slug}>{tag.label}</Link>
+              <Link href={`/episodes/tag/${tag.slug}`}>{tag.label}</Link>
             )
           })
         }
       </div>
+
       <p class="mt-8 text-sm">
-        <em
-          >Project {page.start + 1} through {page.end + 1} of {page.total} total projects tagged with "{
+        <em>
+          Episode {page.start + 1} through {page.end + 1} of {page.total} total episodes tagged with "{
             currentTag.label
-          }"</em
-        >
+          }"
+        </em>
       </p>
       <ul class="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
-          page.data.map((project) => (
+          page.data.map((episode) => (
             <li>
               <Card
-                imageComponent={project.featuredImage}
-                url={'/portfolio/' + project.id}
-                title={project.data.title}
+                imageSrc={getYoutubeThumbnail(episode.data.youtubeUrl)}
+                imageAlt={`Thumbnail for ${episode.data.title}`}
+                url={`/episodes/${episode.id}`}
+                title={episode.data.title}
                 headingLevel="h2"
-                footer={'Author: ' + project.data.author}
+                footer={`Guest: ${episode.data.guestName ?? episode.data.author}`}
                 fullHeight={true}
               >
                 <span slot="meta">
-                  {project.data.tags.map((tag) => {
-                    const isCurrentTag = tag === currentTag.label
-                    return isCurrentTag ? <Badge class="bg-blue-600 text-white">{tag}</Badge> : <Badge>{tag}</Badge>
+                  {episode.data.episodeNumber && <Badge>Ep. {episode.data.episodeNumber}</Badge>}
+                  {episode.data.tags.map((tag) => {
+                    const isCurrent = tag === currentTag.label
+                    return isCurrent ? <Badge class="bg-primary text-white">{tag}</Badge> : <Badge>{tag}</Badge>
                   })}
                 </span>
-                {project.data.description}
+                {episode.data.description}
               </Card>
             </li>
           ))
         }
       </ul>
 
-      <!-- Pagination -->
       {
-        page && page.lastPage > 1 && (
+        page.lastPage > 1 && (
           <div class="mt-12 grid place-content-center">
             <Pagination
-              firstPage={page.url.prev ? `/portfolio/tag/${currentTag.slug}` : null}
-              previousPage={page.url.prev ? page.url.prev : null}
-              nextPage={page.url.next ? page.url.next : null}
-              lastPage={page.url.next ? `/portfolio/tag/${currentTag.slug}/${page.lastPage}` : null}
+              firstPage={page.url.prev ? `/episodes/tag/${currentTag.slug}` : null}
+              previousPage={page.url.prev ?? null}
+              nextPage={page.url.next ?? null}
+              lastPage={page.url.next ? `/episodes/tag/${currentTag.slug}/${page.lastPage}` : null}
               currentPage={`${page.currentPage}`}
               totalPages={`${page.lastPage}`}
-              ariaLabel={`${currentTag.label} portfolio pagination`}
+              ariaLabel={`${currentTag.label} episodes pagination`}
             />
           </div>
         )

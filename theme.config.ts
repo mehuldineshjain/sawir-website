@@ -7,9 +7,9 @@ export default defineThemeConfig({
   id: 'south-asian-women-in-rare',
   logo: logoImage,
   seo: {
-    title: 'Accessible Astro Starter',
+    title: 'South Asian Women in Rare',
     description:
-      'A space for women from South Asia to get to share their experiences, journeys and insights of having a person in their life or living with a rare disease',
+      'A space for women from South Asia to share their experiences, journeys and insights of living with or supporting someone with a rare disease.',
     author: 'Mehul Dinesh Jain',
     image: previewImage, // Can also be a string e.g. '/social-preview-image.png',
   },
@@ -25,7 +25,6 @@ export default defineThemeConfig({
     neutral: '#b9bec4',// Maroon #651f40
     outline: '#000000',// Black #000000
   },
-
   navigation: {
     darkmode: true,
     items: [
@@ -36,65 +35,33 @@ export default defineThemeConfig({
       },
       {
         type: 'link',
-        label: 'Blog',
-        href: '/blog',
+        label: 'Episodes',
+        href: '/episodes',
       },
       {
         type: 'link',
-        label: 'Portfolio',
-        href: '/portfolio',
-      },
-      {
-        label: 'Features',
-        type: 'dropdown',
-        items: [
-          {
-            label: 'Accessibility statement',
-            href: '/accessibility-statement',
-          },
-          {
-            label: 'Accessible components',
-            href: '/accessible-components',
-          },
-          {
-            label: 'Accessible launcher',
-            href: '/accessible-launcher',
-          },
-          {
-            label: 'Color contrast checker',
-            href: '/color-contrast-checker',
-          },
-          {
-            label: 'Markdown page',
-            href: '/markdown-page',
-          },
-          {
-            label: 'MDX page',
-            href: '/mdx-page',
-          },
-          {
-            label: '404 page',
-            href: '/404',
-          },
-          {
-            label: 'Sitemap',
-            href: '/sitemap',
-          },
-        ],
+        label: 'Blog',
+        href: '/blog',
       },
       {
         type: 'link',
         label: 'Contact',
         href: '/contact',
       },
-      // {
-      //   type: 'link',
-      //   label: 'Go to our GitHub page, opens in new tab',
-      //   href: 'https://github.com/incluud/accessible-astro-starter',
-      //   icon: 'lucide:github',
-      //   external: true,
-      //   excludeFromLauncher: true,
-      // },
+      {
+        label: 'More',
+        type: 'dropdown',
+        items: [
+          {
+            label: 'Sitemap',
+            href: '/sitemap',
+          },
+          {
+            label: 'Accessibility statement',
+            href: '/accessibility-statement',
+          },
+        ],
+      },
     ],
   },
   socials: [
@@ -107,11 +74,6 @@ export default defineThemeConfig({
       label: 'Bluesky',
       href: 'https://bsky.app/profile/incluud.dev',
       icon: 'lucide:bot-message-square',
-    },
-    {
-      label: 'Open Collective',
-      href: 'https://opencollective.com/incluud',
-      icon: 'lucide:hand-heart',
     },
   ],
 })

@@ -1,11 +1,7 @@
-// 1. Import utilities from `astro:content`
 import { defineCollection } from 'astro:content'
 import { z } from 'astro/zod'
-
-// 2. Import loader(s)
 import { glob } from 'astro/loaders'
 
-// 3. Define your collection(s)
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
   schema: z.object({
@@ -16,5 +12,31 @@ const projects = defineCollection({
   }),
 })
 
-// 4. Export a single `collections` object to register you collection(s)
-export const collections = { projects }
+
+const episodes = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/episodes' }),
+  schema: z.object({
+    title: z.string(),
+    youtubeUrl: z.string().url(),
+    description: z.string(),
+    tags: z.array(z.string()).default([]),
+    author: z.string().default('South Asian Women in Rare'),
+    publishDate: z.date().optional(),
+    episodeNumber: z.number().optional(),
+    guestName: z.string().optional(),
+  }),
+})
+
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    author: z.string(),
+    publishDate: z.date(),
+    tags: z.array(z.string()).default([]),
+    featuredImage: z.string().optional(),
+  }),
+})
+
+export const collections = { episodes, blog, projects }

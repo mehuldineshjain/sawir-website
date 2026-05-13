@@ -87,7 +87,7 @@ const launcherBlogItems = await (async () => {
  */
 const launcherProjectItems = (await getCollection('projects')).map((project) => ({
   label: project.data.title,
-  href: `/portfolio/${project.id}`,
+  href: `/episode/${project.id}`,
   keywords: [project.data.author, ...project.data.tags],
 }))
 

@@ -2,187 +2,153 @@
 import DefaultLayout from '@layouts/DefaultLayout.astro'
 import Hero from '@components/Hero.astro'
 import Feature from '@components/Feature.astro'
-import Counter from '@components/Counter.astro'
 import ContentMedia from '@components/ContentMedia.astro'
-import FeaturedProjects from '@components/FeaturedProjects.astro'
+import FeaturedEpisodes from '@components/FeaturedEpisodes.astro'
 import FeaturedPosts from '@components/FeaturedPosts.astro'
-import { Accordion, AccordionItem, Avatar, AvatarGroup, Heading, Link } from 'accessible-astro-components'
+import TeamCarousel from '@components/TeamCarousel.astro'
+import YouTubePlayer from '@components/YouTubePlayer.astro'
+import { Accordion, AccordionItem, Heading, Link } from 'accessible-astro-components'
 import { Icon } from 'astro-icon/components'
+import { getCollection } from 'astro:content'
+
+// Get the latest episode for the player
+const episodes = await getCollection('episodes')
+const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.episodeNumber ?? 0))[0]
 ---
 
-<DefaultLayout title="Accessible Astro Starter - Build Faster, More Inclusive Websites" useTitleTemplate={false}>
-
-
- <!-- First section or the HERO Page -->
+<DefaultLayout
+  title="South Asian Women in Rare — Stories That Connect Us"
+  description="A space for South Asian women to share their experiences living with or supporting someone with a rare disease."
+  useTitleTemplate={false}
+>
   <Hero />
 
+  <!-- Latest Episode Player -->
+  {
+    latestEpisode && (
+      <section class="my-64" aria-labelledby="latest-ep-heading">
+        <div class="container">
+          <div class="mx-auto max-w-3xl">
+            <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p class="text-sm font-medium tracking-wide uppercase" style="color: var(--color-primary)">
+                  Latest Episode
+                </p>
+                <Heading level="h2" id="latest-ep-heading" class="mt-1">
+                  {latestEpisode.data.title}
+                </Heading>
+                {latestEpisode.data.guestName && <p class="mt-1 text-lg">with {latestEpisode.data.guestName}</p>}
+              </div>
+              <Link href="/episodes">See all episodes →</Link>
+            </div>
+            <YouTubePlayer url={latestEpisode.data.youtubeUrl} title={latestEpisode.data.title} />
+            <p class="mt-4">{latestEpisode.data.description}</p>
+            <div class="mt-4">
+              <Link href={`/episodes/${latestEpisode.id}`} isButton type="primary">
+                Show notes & transcript
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
-  <!-- Second section: Features -->
+  <!-- Why this space exists -->
   <section class="my-64">
     <div class="container">
-
-      <Heading level="h2" class="mb-8">Features</Heading>
-
-
+      <Heading level="h2" class="mb-8">Why this space exists</Heading>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-        <Feature icon="lucide:accessibility" title="Accessible by default">
-          Keyboard navigation, focus indicators, ARIA labels, semantic HTML, and more. This theme is designed to be
-          inclusive.
+        <Feature icon="lucide:heart" title="Community first">
+          A safe space built specifically for South Asian women navigating rare disease — whether as a patient,
+          caregiver, or advocate.
         </Feature>
-        <Feature icon="lucide:puzzle" title="A11Y components">
-          35+ components and counting, all tried and tested for the most optimal accessible experience for your
-          visitors.
+        <Feature icon="lucide:mic" title="Authentic voices">
+          Every episode is a real conversation with a real woman sharing her unfiltered experience without a script.
         </Feature>
-        <Feature icon="lucide:moon" title="Dark mode">
-          Fully integrated Dark mode gives your users the choice for their favorite viewing mode.
+        <Feature icon="lucide:globe" title="Bridging cultures">
+          We explore how cultural context, family dynamics, and South Asian identity shape the rare disease experience.
         </Feature>
-        <Feature icon="lucide:paintbrush" title="Tailwind 4.0">
-          Use the power of Tailwind to greatly improve your productivity and enhance your developer workflow.
+        <Feature icon="lucide:users" title="Finding each other">
+          Rare disease is isolating by nature. This podcast helps women find others who truly understand.
         </Feature>
-        <Feature icon="lucide:sparkles" title="Prettier">
-          Less worry about formatting your code, let the Astro Prettier integration do the heavy lifting.
+        <Feature icon="lucide:book-open" title="Sharing resources">
+          Each episode surfaces tools, organisations, and strategies that have made a real difference.
         </Feature>
-        <Feature icon="lucide:code" title="ESLint">
-          Lint your code with strict a11y settings to ensure you stay on track with the WCAG standards.
-        </Feature>
-        <Feature icon="lucide:bookmark" title="Blog & portfolio">
-          This theme comes with a fully integrated blog and portfolio, dynamic pages and SEO optimization.
-        </Feature>
-        <Feature icon="lucide:file-text" title="Markdown & MDX">
-          Easily use .md and .mdx pages to build your websites or use it with Netlify CMS.
-        </Feature>
-        <Feature icon="lucide:blocks" title="Design system">
-          The theme offers some very handy utilities to help you build your website faster.
+        <Feature icon="lucide:lightbulb" title="Raising awareness">
+          The more we talk, the less invisible rare disease becomes. Every story is an act of advocacy.
         </Feature>
       </div>
     </div>
   </section>
 
   <ContentMedia imgSrc="/accessible-components.webp">
-    <Heading level="h2">Accessible components</Heading>
+    <Heading level="h2">Share your story</Heading>
     <p class="text-2xl">
-      This theme provides plenty of tried and tested Accessible Astro Components. Some are native to this theme and a
-      lot of others are integrated using a <Link
-        isExternal
-        href="https://github.com/incluud/accessible-astro-components">separate package</Link
-      >. They'll get you up and running in building an accessible solution for your visitors.
+      Are you a South Asian woman with lived experience of rare disease? We'd love to have you on the show. Your story
+      could be exactly what someone else needs to hear.
     </p>
+    <Link href="/contact" isButton type="primary" animateOnHover animationType="boop">
+      <Icon aria-hidden="true" name="lucide:mic" size="1.5rem" />
+      Get in touch
+    </Link>
   </ContentMedia>
 
-  <ContentMedia imgSrc="/wcag-compliant.webp" reverseImg={true}>
-    <Heading level="h2">WCAG 2.2 AA compliant</Heading>
-    <p class="text-2xl">
-      Using semantic HTML, landmarks, skip links, screen reader friendly content, aria-labels, keyboard accessible
-      navigation and components, clear outlines and tab indicators and the right color contrast, you're more certain of
-      reaching WCAG AA compliance.
-    </p>
-  </ContentMedia>
+  <!-- Featured Episodes (3 most recent) -->
+  <FeaturedEpisodes />
 
+  <!-- Meet the Team -->
+  <TeamCarousel />
 
-  <FeaturedProjects />
-
-
+  <!-- Blog posts -->
   <FeaturedPosts />
 
-
+  <!-- FAQ -->
   <section class="my-64">
     <div class="container grid grid-cols-1 gap-12 md:grid-cols-2">
       <div class="flex flex-col items-start gap-4">
-        <Heading level="h2">FAQ</Heading>
-        <p class="text-2xl">
-          This section demonstrates how to effectively use the Accordion component to organize and display frequently
-          asked questions in an accessible and user-friendly way.
-        </p>
-        <Link href="/faq" isButton type="primary" animateOnHover animationType="boop">
-          <Icon aria-hidden="true" name="lucide:headset" size=" 1.5rem" />
-          Contact support team
+        <Heading level="h2">Common questions</Heading>
+        <p class="text-2xl">New here? Here are some answers to questions we hear often from guests and listeners.</p>
+        <Link href="/contact" isButton type="primary" animateOnHover animationType="boop">
+          <Icon aria-hidden="true" name="lucide:headset" size="1.5rem" />
+          Ask us something
         </Link>
       </div>
       <div class="space-content">
         <Accordion>
-          <AccordionItem name="exclusive" title="What is WCAG and why is it important?" open>
+          <AccordionItem name="faq" title="Who is this podcast for?" open>
             <p>
-              WCAG (Web Content Accessibility Guidelines) is a set of internationally recognized standards for web
-              accessibility. Following WCAG ensures your website is usable by people with various disabilities,
-              including visual, auditory, physical, and cognitive impairments. It's important not just for
-              accessibility, but also for legal compliance, SEO, and reaching a wider audience.
+              South Asian Women in Rare is for South Asian women who are living with a rare disease, caring for someone
+              who is, or working in the rare disease space. It's also for anyone who wants to better understand these
+              experiences.
             </p>
           </AccordionItem>
-          <AccordionItem name="exclusive" title="What's the difference between ARIA labels and alt text?">
+          <AccordionItem name="faq" title="How can I be a guest?">
             <p>
-              Alt text is specifically for describing images to screen reader users, while ARIA labels (aria-label,
-              aria-labelledby) can describe any element on a page. Alt text is HTML's native way to provide alternative
-              text for images, while ARIA labels are part of the ARIA specification that helps make dynamic content and
-              advanced UI controls more accessible.
+              We'd love to hear from you. Visit our Contact page and send us a message with a bit about your story. We
+              welcome guests at all stages of their journey — you don't need to have it all figured out.
             </p>
           </AccordionItem>
-          <AccordionItem name="exclusive" title="Why is keyboard navigation important?">
+          <AccordionItem name="faq" title="Where can I listen?">
             <p>
-              Keyboard navigation is essential for users who can't use a mouse, including people with motor
-              disabilities, visual impairments, or those who simply prefer keyboard controls. A website should be fully
-              operable using only a keyboard, with visible focus indicators and logical tab order. This includes being
-              able to access all interactive elements and navigate through content efficiently.
+              All episodes are available to watch directly on this website. You can also find us on YouTube. Podcast
+              audio versions are coming soon.
             </p>
           </AccordionItem>
-          <AccordionItem name="exclusive" title="What is a sufficient color contrast ratio?">
+          <AccordionItem name="faq" title="Is this only for people with rare diseases?">
             <p>
-              According to WCAG 2.2 AA standards, text should have a minimum contrast ratio of 4.5:1 against its
-              background for regular text, and 3:1 for large text (18pt or 14pt bold). For non-text elements like icons
-              or buttons, a minimum ratio of 3:1 is required. This ensures content is readable for users with visual
-              impairments or color blindness.
+              Not at all. Caregivers, family members, healthcare professionals, and allies are all warmly welcome. Rare
+              disease touches everyone around the person diagnosed.
             </p>
           </AccordionItem>
-          <AccordionItem name="exclusive" title="How do I make custom components accessible?">
+          <AccordionItem name="faq" title="Do you take topic suggestions?">
             <p>
-              To make custom components accessible, focus on these key aspects: use semantic HTML where possible,
-              implement proper keyboard support, add appropriate ARIA attributes, manage focus when needed, and ensure
-              adequate color contrast. Always test with screen readers and keyboard navigation. Consider using
-              established design patterns from the <Link href="https://www.w3.org/WAI/ARIA/apg/patterns/"
-                >ARIA Authoring Practices Guide</Link
-              >.
+              Yes! We read every message we receive. If there's a topic, guest, or lived experience you think deserves
+              airtime, please reach out through our Contact page.
             </p>
           </AccordionItem>
         </Accordion>
       </div>
     </div>
   </section>
-  <section class="my-64">
-    <div class="space-content container">
-      <Heading level="h2">Our community</Heading>
-      <p class="text-2xl">
-        We're a community of developers who are passionate about making the web more accessible. We're always looking
-        for new ways to improve the accessibility of the web.
-      </p>
-      <AvatarGroup display="grid" gridItemsSize="300px" gridGap="2rem">
-        <Avatar initials="RJ" title="Robert Johnson" subtitle="Manager" />
-        <Avatar initials="MT" title="Maria Torres" subtitle="Developer" />
-        <Avatar initials="AK" title="Alex Kim" subtitle="Designer" />
-        <Avatar initials="SL" title="Sarah Lee" subtitle="Content Strategist" />
-        <Avatar initials="JP" title="James Peterson" subtitle="QA Engineer" />
-        <Avatar initials="LW" title="Lisa Wong" subtitle="Product Owner" />
-        <Avatar initials="DM" title="David Martinez" subtitle="UX Researcher" />
-        <Avatar initials="EB" title="Emma Brown" subtitle="Accessibility Specialist" />
-        <Avatar initials="TC" title="Thomas Chen" subtitle="Frontend Developer" />
-      </AvatarGroup>
-    </div>
-  </section>
-  <section class="mt-64 mb-32">
-    <div class="container">
-      <Heading level="h2" class="mb-16">Impact in numbers</Heading>
-      <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
-        <Counter count="1.100+" title="Stars" sub="On GitHub" />
-        <Counter count="35+" title="Accessible" sub="Components" />
-        <Counter count="500+" title="Commits" sub="Merged" />
-        <Counter count="48+" title="Months" sub="Since launch" />
-      </div>
-    </div>
-  </section>
 </DefaultLayout>
-
-<style>
-  .avatar {
-    border: 1px solid var(--border-color-subtle);
-    border-radius: var(--radius-md);
-    padding: var(--space-s);
-  }
-</style>

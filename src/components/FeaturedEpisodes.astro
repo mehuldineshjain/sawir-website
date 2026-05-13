@@ -1,0 +1,46 @@
+---
+import { Card, Heading, Link, Badge } from 'accessible-astro-components'
+import { getCollection } from 'astro:content'
+
+function getYoutubeThumbnail(url: string): string {
+  const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
+  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : '/placeholder.png'
+}
+
+const episodes = await getCollection('episodes')
+const featured = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.episodeNumber ?? 0)).slice(0, 3)
+---
+
+<section class="my-64">
+  <div class="container">
+    <div class="mb-8 flex items-end justify-between">
+      <Heading level="h2">Latest Episodes</Heading>
+      <Link href="/episodes">View all episodes →</Link>
+    </div>
+    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        featured.map((episode) => (
+          <li>
+            <Card
+              imageSrc={getYoutubeThumbnail(episode.data.youtubeUrl)}
+              imageAlt={`Thumbnail for ${episode.data.title}`}
+              url={`/episodes/${episode.id}`}
+              title={episode.data.title}
+              headingLevel="h3"
+              footer={`Guest: ${episode.data.guestName ?? episode.data.author}`}
+              fullHeight={true}
+            >
+              <span slot="meta">
+                {episode.data.episodeNumber && <Badge>Ep. {episode.data.episodeNumber}</Badge>}
+                {episode.data.tags.slice(0, 2).map((tag) => (
+                  <Badge>{tag}</Badge>
+                ))}
+              </span>
+              {episode.data.description}
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
