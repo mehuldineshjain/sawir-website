@@ -1,0 +1,55 @@
+---
+interface Props {
+  url: string
+  title: string
+}
+
+const { url, title } = Astro.props
+
+function getYoutubeEmbedUrl(url: string): string | null {
+  const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
+  return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : null
+}
+
+const embedUrl = getYoutubeEmbedUrl(url)
+---
+
+{
+  embedUrl ? (
+    <div class="video-wrapper">
+      <iframe
+        src={embedUrl}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      />
+    </div>
+  ) : (
+    <p class="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700">
+      Unable to load video.{' '}
+      <a href={url} target="_blank" rel="noopener noreferrer">
+        Watch on YouTube →
+      </a>
+    </p>
+  )
+}
+
+<style>
+  .video-wrapper {
+    position: relative;
+    border-radius: var(--radius-large);
+    background-color: #000;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

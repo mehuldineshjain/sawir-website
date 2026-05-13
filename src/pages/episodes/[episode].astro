@@ -5,7 +5,7 @@ import SocialShares from '@components/SocialShares.astro'
 import { Badge, Heading } from 'accessible-astro-components'
 import { getCollection, render } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
-import YouTubePlayer from '@components/YouTubePlayer.astro'
+// import YouTubePlayer from '@components/YouTubePlayer.astro'
 
 function getYoutubeEmbedUrl(url: string): string {
   const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
@@ -63,13 +63,13 @@ const formattedDate = episode.data.publishDate
       {
         embedUrl && (
           <div class="video-wrapper mb-10">
-            {/* <iframe
+            <iframe
               src={embedUrl}
               title={`YouTube video: ${episode.data.title}`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen/> */}
+              allowfullscreen/>
 
-            <YouTubePlayer url={episode.data.youtubeUrl} title={episode.data.title} />
+            {/* <YouTubePlayer url={episode.data.youtubeUrl} title={episode.data.title} /> */}
           </div>
         )
       }
