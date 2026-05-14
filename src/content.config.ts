@@ -49,7 +49,9 @@ const team = defineCollection({
       initials: 'PR',
       color: 'primary',
       order: 1,
-      img_url: 'src/assets/img/avatar.png'
+
+      // Public folder path
+      img_url: '/team/avatar.png',
     },
     {
       id: 'niveda',
@@ -59,7 +61,8 @@ const team = defineCollection({
       initials: 'AR',
       color: 'secondary',
       order: 2,
-      img_url: 'src/assets/img/avatar.png'
+
+      img_url: '/team/avatar.png',
     },
     {
       id: 'beth',
@@ -69,7 +72,8 @@ const team = defineCollection({
       initials: 'B',
       color: 'primary',
       order: 3,
-      img_url: 'src/assets/img/avatar.png'
+
+      img_url: '/team/avatar.png',
     },
     {
       id: 'mehul-jain',
@@ -79,9 +83,15 @@ const team = defineCollection({
       initials: 'MJ',
       color: 'secondary',
       order: 4,
-      img_url: 'src/assets/img/avatar-man.png'
+
+      img_url: '/team/avatar-man.png',
     },
   ],
+
+  // IMPORTANT:
+  // Since images are stored in /public/team,
+  // these should remain simple string paths.
+  // Do NOT use image() here.
   schema: z.object({
     id: z.string(),
     name: z.string(),
