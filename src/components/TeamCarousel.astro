@@ -33,7 +33,8 @@ import { getCollection } from 'astro:content'
 import { Card } from 'accessible-astro-components'
 // import avatar from '@assets/img/avatar.png'
 const teamEntries = await getCollection('team')
-const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
+// FIX: Sorting by the 'order' field to prevent Beth from jumping to the front
+const team = teamEntries.sort((a, b) => (a.data.order || 0) - (b.data.order || 0))
 ---
 
 <section class="my-64" aria-labelledby="team-heading">
@@ -44,46 +45,22 @@ const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
     </div>
 
     <div class="carousel-wrapper">
-      <!-- <div class="carousel" id="team-carousel" role="region" aria-label="Team members">
-        {
-          team.map((member) => (
-            <article class="carousel-card" aria-label={`${member.data.name}, ${member.data.role}`}>
-              {/* FIX: Use member.data.color and member.data.initials */}
-              <div class={`avatar avatar--${member.data.color}`} aria-hidden="true">
-                {member.data.initials}
-              </div>
-
-              <h3 class="mt-4 text-lg font-semibold">{member.data.name}</h3>
-              <p class="role">{member.data.role}</p>
-              <p class="bio">{member.data.bio}</p>
-            </article>
-          ))
-        }
-      </div> -->
-
       <div class="carousel" id="team-carousel" role="region" aria-label="Team members">
         {
           team.map((member) => (
-            <Card
-                img={member.data.img_url}
-                width={400} height={400}
-                url="/blog/post"
+            <div class="carousel-item">
+              <Card
+                img={member.data.img_url || 'https://placehold.co/400x400?text=Avatar'}
+                width={400}
+                height={400}
+                url="#"
                 title={member.data.name}
-                class="carousel-card">
-              <p class="role">{member.data.role}</p>
-              <p class="bio">{member.data.bio}</p>
-            </Card>
-
-            // <article class="carousel-card" aria-label={`${member.data.name}, ${member.data.role}`}>
-            //   {/* FIX: Use member.data.color and member.data.initials */}
-            //   <div class={`avatar avatar--${member.data.color}`} aria-hidden="true">
-            //     {member.data.initials}
-            //   </div>
-
-            //   <h3 class="mt-4 text-lg font-semibold">{member.data.name}</h3>
-            //   <p class="role">{member.data.role}</p>
-            //   <p class="bio">{member.data.bio}</p>
-            // </article>
+                class="carousel-card"
+              >
+                <p class="role">{member.data.role}</p>
+                <p class="bio">{member.data.bio}</p>
+              </Card>
+            </div>
           ))
         }
       </div>
@@ -100,15 +77,16 @@ const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function initCarousel() {
     const carousel = document.getElementById('team-carousel')
-    const prevBtn = document.getElementById('prev-btn')
-    const nextBtn = document.getElementById('next-btn')
+    const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement
+    const nextBtn = document.getElementById('next-btn') as HTMLButtonElement
     const dots = document.querySelectorAll('.dot')
 
     if (!carousel || !prevBtn || !nextBtn) return
 
-    const cards = carousel.querySelectorAll('.carousel-card')
+    // FIX: Using .carousel-item wrapper to ensure selectors work on Netlify
+    const cards = carousel.querySelectorAll('.carousel-item')
     const total = cards.length
 
     let current = 0
@@ -148,8 +126,9 @@ const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
     nextBtn.addEventListener('click', () => scrollToCard(current + 1))
 
     dots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        const idx = parseInt(dot.dataset.index || '0', 10)
+      dot.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement
+        const idx = parseInt(target.dataset.index || '0', 10)
         scrollToCard(idx)
       })
     })
@@ -157,7 +136,12 @@ const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
     window.addEventListener('resize', () => scrollToCard(current))
 
     scrollToCard(0)
-  })
+  }
+
+  // Initialize on load
+  initCarousel()
+  // Ensure it re-runs if you are using Astro View Transitions
+  document.addEventListener('astro:page-load', initCarousel)
 </script>
 
 <style>
@@ -179,53 +163,35 @@ const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
     display: none;
   }
 
-  .carousel-card {
+  /* FIX: Styles moved to the wrapper to ensure layout persists on Netlify */
+  .carousel-item {
     flex: 0 0 calc((100% - 3rem) / 3);
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease;
-    border: 1px solid var(--border-color-subtle);
-    border-radius: var(--radius-large);
-    background-color: var(--background-color);
-    padding: 1.5rem;
     scroll-snap-align: start;
   }
 
-  .carousel-card:hover {
+  .carousel-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   @media (max-width: 1023px) {
-    .carousel-card {
+    .carousel-item {
       flex: 0 0 calc((100% - 1.5rem) / 2);
     }
   }
 
   @media (max-width: 639px) {
-    .carousel-card {
+    .carousel-item {
       flex: 0 0 100%;
     }
   }
 
-  .avatar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 3.5rem;
-    height: 3.5rem;
-    color: white;
-    font-weight: 700;
-    font-size: 0.875rem;
-  }
-
-  .avatar--primary {
-    background-color: var(--color-primary);
-  }
-
-  .avatar--secondary {
-    background-color: var(--color-secondary);
+  /* Ensure the Card inside takes up full width of the wrapper */
+  :global(.carousel-item .card) {
+    width: 100%;
+    height: 100%;
   }
 
   .role {
@@ -276,11 +242,6 @@ const team = teamEntries.sort((a, b) => a.data.order - b.data.order)
   .carousel-btn:disabled {
     opacity: 0.35;
     cursor: not-allowed;
-  }
-
-  .carousel-btn:focus-visible {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 2px;
   }
 
   .carousel-dots {
