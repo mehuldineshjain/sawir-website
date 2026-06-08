@@ -1,0 +1,100 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import Feature from '@components/Feature.astro' // Adjust path if needed
+import { Heading, Link } from 'accessible-astro-components'
+import { Icon } from 'astro-icon/components'
+---
+
+<DefaultLayout title="About Us">
+  <PageHeader
+    title="About Us"
+    subtitle="Amplifying the voices of South Asian women navigating the rare disease world."
+    bgType="gradient"
+  />
+
+  <section class="my-16">
+    <div class="container">
+      <div class="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-32">
+        <div class="space-content md:col-span-8">
+          <Heading level="h2">Our Mission</Heading>
+          <p class="lead text-xl">
+            At South Asian Women in Rare, we are creating a space where lived experiences are heard, valued, and
+            celebrated.
+          </p>
+          <p>
+            This platform was founded to amplify the voices of South Asian women navigating the rare disease world.
+            Whether you are a patient organisation, advocate, parent, researcher, or someone living with a rare
+            condition, these are stories that are too often overlooked or unheard.
+          </p>
+          <p>
+            Through honest conversations, powerful storytelling, and meaningful community connection, our podcast
+            explores the realities of living with rare conditions while balancing culture, family expectations,
+            healthcare, education, work, and self-identity. We believe that sharing these experiences openly can create
+            understanding, challenge stigma, and remind others that they are not alone.
+          </p>
+          <p class="text-lg font-semibold">
+            South Asian Women in Rare is more than a podcast — it is a growing platform for visibility, representation,
+            and connection. By bringing together diverse voices from across the rare disease community, we hope to
+            create conversations that empower, educate, and inspire change.
+          </p>
+        </div>
+
+        <div class="quote-block space-content flex flex-col justify-center rounded-lg p-8 md:col-span-4">
+          <p class="font-serif text-2xl italic">
+            "Because every story matters. And every voice deserves to be heard."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature-section py-16">
+    <div class="container">
+      <Heading level="h2" class="mb-12 text-center">Here, you can:</Heading>
+
+      <div class="grid grid-cols-1 gap-12 pb-8 sm:grid-cols-2 lg:grid-cols-4">
+        <Feature icon="lucide:mic" title="Listen"> Listen to unfiltered stories and lived experiences </Feature>
+
+        <Feature icon="lucide:book-open" title="Learn"> Learn about rare diseases, disability, and advocacy </Feature>
+
+        <Feature icon="lucide:users" title="Collaborate">
+          Collaborate with community members, organisations, and changemakers
+        </Feature>
+
+        <Feature icon="lucide:message-square" title="Connect"> Connect with others who understand the journey </Feature>
+      </div>
+    </div>
+  </section>
+
+  <section class="my-24 text-center">
+    <div class="space-content container mx-auto max-w-2xl">
+      <Heading level="h2">Have a story to share?</Heading>
+      <p class="text-lg">
+        Whether you want to join us as a podcast guest, suggest a topic, or partner on a project, we would love to hear
+        from you.
+      </p>
+      <div class="pt-4">
+        <Link href="/contact" isButton type="primary" animateOnHover animationType="boop">
+          <Icon aria-hidden="true" name="lucide:mic" size="1.5rem" />
+          Get in touch
+        </Link>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style lang="scss">
+  .feature-section {
+    background-color: light-dark(var(--color-neutral-200), var(--color-neutral-800));
+  }
+
+  .quote-block {
+    background-color: light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    border-left: 4px solid light-dark(var(--color-primary-400), var(--color-primary-300));
+
+    p {
+      color: light-dark(var(--color-neutral-700), var(--color-neutral-300));
+    }
+  }
+</style>

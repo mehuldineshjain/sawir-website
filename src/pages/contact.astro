@@ -1,117 +1,98 @@
 ---
 import DefaultLayout from '@layouts/DefaultLayout.astro'
 import PageHeader from '@components/PageHeader.astro'
-import { Form, Input, Button, Textarea, Checkbox, Fieldset, Heading, Link, Radio } from 'accessible-astro-components'
+import { Form, Input, Button, Textarea, Fieldset, Heading, Link, Radio } from 'accessible-astro-components'
 import { Icon } from 'astro-icon/components'
 ---
 
-<DefaultLayout title="Contact">
-  <PageHeader title="Contact" subtitle="Have a question? Get in touch with us!" bgType="gradient" />
+<DefaultLayout title="Contact Us">
+  <PageHeader
+    title="Contact Us"
+    subtitle="Have a question, a story to share, or want to collaborate? Get in touch with us!"
+    bgType="gradient"
+  />
+
   <section class="my-16">
     <div class="container">
       <Heading level="h2">Let's talk</Heading>
     </div>
   </section>
-  <section class="container">
-    <div class="grid grid-cols-1 gap-32 md:grid-cols-2">
+
+  <section class="container mb-24">
+    <div class="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-32">
       <div class="space-content">
         <Form name="contact" action="/thank-you" method="post">
-          <!-- Input field with custom validation message -->
           <Input
-            name="firstname"
-            label="First name"
+            name="fullname"
+            label="Full name"
             required
-            data-validation="We need your first name to address you correctly"
+            data-validation="We need your full name to address you correctly"
             autocomplete="given-name"
           />
 
           <Input name="email" label="Email address" type="email" required autocomplete="email" />
 
-          <!-- Custom validation with pattern -->
-          <Input name="phone" label="Phone number" type="tel" required data-validation-pattern="^[0-9]{10}$" />
+          <Input name="phone" label="Phone number (Optional)" type="tel" />
 
-          <Textarea name="message" label="Message" required />
+          <Textarea name="message" label="How can we help you? / Share your story idea" required />
 
-          <!-- Checkbox group with validation -->
-          <Fieldset
-            name="interests"
-            legend="What are you interested in?"
-            required
-            data-validation="Please select at least one area of interest"
-          >
-            <Checkbox name="accessibility" value="a11y" label="Accessibility and inclusive design" />
-            <Checkbox name="wcag-compliance" value="wcag" label="WCAG compliance and testing" />
-            <Checkbox name="screen-reader" value="sr" label="Screen reader optimization" />
-            <Checkbox name="keyboard-nav" value="keyboard" label="Keyboard navigation" />
-          </Fieldset>
-
-          <!-- Radio group (shared names) -->
-          <Fieldset name="experience" legend="Your experience level" required>
-            <Radio name="experience" value="beginner" label="Beginner" />
-            <Radio name="experience" value="intermediate" label="Intermediate" />
-            <Radio name="experience" value="advanced" label="Advanced" />
+          <Fieldset name="identity" legend="How do you associate with us?" required>
+            <Radio name="identity" value="Patient" label="Patient living with a rare condition" />
+            <Radio name="identity" value="Parent/Caregiver" label="Parent or Caregiver" />
+            <Radio name="identity" value="Healthcare Worker" label="Healthcare worker / Researcher" />
+            <Radio name="identity" value="Organisation" label="Patient organisation or Changemaker" />
+            <Radio name="identity" value="Advocate" label="Advocate in the rare disease space" />
           </Fieldset>
 
           <Button htmlType="submit" type="primary">Send Message</Button>
         </Form>
       </div>
+
       <div class="space-content">
-        <Heading level="h3">Contact us</Heading>
+        <Heading level="h3">Get in Touch</Heading>
         <p class="text-lg">
-          Do you identify as a south-asian woman associated with rare diseases? Would you like to be on the show? Do you
-          have some questions for us?
+          Do you identify as a South Asian woman associated with rare diseases? Would you like to be a guest on our
+          podcast? Or perhaps you have some questions for our team?
         </p>
-        <p>Feel free to write us using the form and our team will get back to you shortly.</p>
+        <p>
+          Feel free to fill out the form, and a member of our team will get back to you shortly. Every voice deserves to
+          be heard.
+        </p>
 
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:phone" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Phone:</span>
-            <Link href="tel:+12345678900">+1 (234) 567-8900</Link>
-          </p>
-        </div>
-
-        <div class="gap-2xs flex items-center">
+        <div class="gap-2xs mt-6 flex items-center">
           <Icon aria-hidden="true" name="lucide:mail" size={20} class="flex-shrink-0" />
           <p>
             <span class="font-bold">Email:</span>
-            <Link href="mailto:hello@accessibleastro.dev">hello@accessibleastro.dev</Link>
+            <Link href="mailto:southasianwomeninrare@gmail.com">southasianwomeninrare@gmail.com</Link>
           </p>
         </div>
 
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:map-pin" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Address:</span>
-            123 Accessibility Lane, Web Standards City
-          </p>
-        </div>
+        <hr class="my-6 border-neutral-300" />
 
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:clock" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Business Hours:</span>
-            Monday - Friday, 9:00 AM - 5:00 PM EST
-          </p>
-        </div>
-
-        <ul class="flex flex-wrap gap-2">
+        <Heading level="h4">Follow Our Journey</Heading>
+        <ul class="mt-2 flex flex-wrap gap-4">
           <li>
-            <Link href="/" isButton isExternal hideIcon animateOnHover animationType="boop">
+            <Link href="https://facebook.com" isButton isExternal hideIcon animateOnHover animationType="boop">
               <Icon aria-hidden="true" name="lucide:facebook" size={32} />
               <span class="sr-only">Go to our Facebook page, opens in a new tab</span>
             </Link>
           </li>
           <li>
-            <Link href="/" isButton isExternal hideIcon animateOnHover animationType="boop">
-              <Icon aria-hidden="true" name="lucide:square-play" size={32} />
-              <span class="sr-only">Go to our Twitter page, opens in a new tab</span>
+            <Link href="https://instagram.com" isButton isExternal hideIcon animateOnHover animationType="boop">
+              <Icon aria-hidden="true" name="lucide:instagram" size={32} />
+              <span class="sr-only">Go to our Instagram profile, opens in a new tab</span>
             </Link>
           </li>
           <li>
-            <Link href="/" isButton isExternal hideIcon animateOnHover animationType="boop">
-              <Icon aria-hidden="true" name="lucide:audio-waveform" size={32} />
+            <Link href="https://linkedin.com" isButton isExternal hideIcon animateOnHover animationType="boop">
+              <Icon aria-hidden="true" name="lucide:linkedin" size={32} />
               <span class="sr-only">Go to our LinkedIn page, opens in a new tab</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="#" isButton isExternal hideIcon animateOnHover animationType="boop">
+              <Icon aria-hidden="true" name="lucide:audio-waveform" size={32} />
+              <span class="sr-only">Listen to our podcast, opens in a new tab</span>
             </Link>
           </li>
         </ul>

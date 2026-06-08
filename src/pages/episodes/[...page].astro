@@ -49,7 +49,7 @@ const { page, uniqueTags } = Astro.props
   <PageHeader
     title="Episodes"
     subtitle="Stories, journeys, and insights from South Asian women living with or supporting someone with a rare disease."
-    bgType="bordered"
+    bgType="gradient"
   />
   <section class="my-12">
     <div class="container">
@@ -75,7 +75,7 @@ const { page, uniqueTags } = Astro.props
           page.data.map((episode) => (
             <li>
               <Card
-                imageSrc={getYoutubeThumbnail(episode.data.youtubeUrl)}
+                img={getYoutubeThumbnail(episode.data.youtubeUrl)}
                 imageAlt={`Thumbnail for ${episode.data.title}`}
                 url={`/episodes/${episode.id}`}
                 title={episode.data.title}

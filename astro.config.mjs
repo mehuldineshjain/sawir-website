@@ -41,6 +41,9 @@ export default defineConfig({
   compressHTML: true,
   site: 'https://accessible-astro-starter.incluud.dev',
   integrations: [compress(), icon(), mdx(), sitemap()],
+  image: {
+    domains: ['img.youtube.com'],
+  },
   vite: enhanceConfigForWorkspace(viteConfig),
   env: {
     schema: {
@@ -49,6 +52,16 @@ export default defineConfig({
         access: 'secret',
         optional: true,
         default: 'https://jsonplaceholder.typicode.com/posts',
+      }),
+      YOUTUBE_API_KEY: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
+      YOUTUBE_CHANNEL_ID: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
       }),
     },
   },

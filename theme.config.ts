@@ -40,9 +40,14 @@ export default defineThemeConfig({
       },
       {
         type: 'link',
-        label: 'Blog',
-        href: '/blog',
+        label: 'About Us',
+        href: '/about',
       },
+      // {
+      //   type: 'link',
+      //   label: 'Blog',
+      //   href: '/blog',
+      // },
       {
         type: 'link',
         label: 'Contact',
@@ -66,12 +71,12 @@ export default defineThemeConfig({
   },
   socials: [
     {
-      label: 'GitHub',
+      label: 'Instagram',
       href: 'https://github.com/incluud/',
       icon: 'lucide:github',
     },
     {
-      label: 'Bluesky',
+      label: 'TikTok',
       href: 'https://bsky.app/profile/incluud.dev',
       icon: 'lucide:bot-message-square',
     },

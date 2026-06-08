@@ -6,20 +6,6 @@ import { getCollection } from 'astro:content'
 // import { Accordion, AccordionItem, Heading, Link } from 'accessible-astro-components'
 // import YouTubePlayer from '@components/YouTubePlayer.astro'
 
-/**
- * Hero Component
- *
- * @description A component that displays a hero section with a title, description, and image
- */
-interface Props {
-  /**
-   * The source URL for the image
-   */
-  src?: string
-}
-
-// const { src = '/astronaut-hero-img.webp' }: Props = Astro.props
-const { src = '/Logo1.svg' }: Props = Astro.props
 const episodes = await getCollection('episodes')
 const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.episodeNumber ?? 0))[0]
 ---
@@ -33,7 +19,7 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
         </h2>
         <!-- <Image class="hidden lg:block" src={src} alt="" decoding="async" width={400} height={300} loading="eager" /> -->
         <div class="flex flex-col gap-3 min-[500px]:flex-row">
-          <Link href={`/episodes/${latestEpisode.id}`} isButton type="primary" animateOnHover animationType="boop">
+          <Link href={`/episodes/${latestEpisode?.id}`} isButton type="primary" animateOnHover animationType="boop">
             <Icon aria-hidden="true" name="lucide:star" size="1.5rem" />
             Latest Episode
           </Link>
@@ -43,7 +29,10 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
           </Link>
         </div>
       </div>
-      <Image class="hidden lg:block" src={src} alt="" decoding="async" width={800} height={600} loading="eager" />
+      <div class="hero-logo hidden lg:block">
+        <Image src="/Logo1.svg" alt="" decoding="async" width={800} height={600} loading="eager" class="logo-light" />
+        <Image src="/Logo2.svg" alt="" decoding="async" width={800} height={600} loading="eager" class="logo-dark" />
+      </div>
       <!-- {
         latestEpisode && (
           <section class="my-64" aria-labelledby="latest-ep-heading">
@@ -79,6 +68,16 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
 <style lang="scss">
   h1 {
     text-wrap: unset;
+  }
+
+  .logo-dark {
+    display: none;
+  }
+  :global(.darkmode) .logo-dark {
+    display: block;
+  }
+  :global(.darkmode) .logo-light {
+    display: none;
   }
 
   .text-gradient {

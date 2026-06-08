@@ -3,17 +3,12 @@ import DefaultLayout from '@layouts/DefaultLayout.astro'
 import Hero from '@components/Hero.astro'
 import Feature from '@components/Feature.astro'
 import ContentMedia from '@components/ContentMedia.astro'
-import FeaturedEpisodes from '@components/FeaturedEpisodes.astro'
-import FeaturedPosts from '@components/FeaturedPosts.astro'
+// import FeaturedPosts from '@components/FeaturedPosts.astro'
 import TeamCarousel from '@components/TeamCarousel.astro'
-import YouTubePlayer from '@components/YouTubePlayer.astro'
 import { Accordion, AccordionItem, Heading, Link } from 'accessible-astro-components'
 import { Icon } from 'astro-icon/components'
-import { getCollection } from 'astro:content'
 
 // Get the latest episode for the player
-const episodes = await getCollection('episodes')
-const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.episodeNumber ?? 0))[0]
 ---
 
 <DefaultLayout
@@ -22,37 +17,6 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
   useTitleTemplate={false}
 >
   <Hero />
-
-  <!-- Latest Episode Player -->
-  {
-    latestEpisode && (
-      <section class="my-64" aria-labelledby="latest-ep-heading">
-        <div class="container">
-          <div class="mx-auto max-w-3xl">
-            <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p class="text-sm font-medium tracking-wide uppercase" style="color: var(--color-primary)">
-                  Latest Episode
-                </p>
-                <Heading level="h2" id="latest-ep-heading" class="mt-1">
-                  {latestEpisode.data.title}
-                </Heading>
-                {latestEpisode.data.guestName && <p class="mt-1 text-lg">with {latestEpisode.data.guestName}</p>}
-              </div>
-              <Link href="/episodes">See all episodes →</Link>
-            </div>
-            <YouTubePlayer url={latestEpisode.data.youtubeUrl} title={latestEpisode.data.title} />
-            <p class="mt-4">{latestEpisode.data.description}</p>
-            <div class="mt-4">
-              <Link href={`/episodes/${latestEpisode.id}`} isButton type="primary">
-                Show notes & transcript
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
 
   <!-- Why this space exists -->
   <section class="my-64">
@@ -82,7 +46,10 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
     </div>
   </section>
 
-  <ContentMedia imgSrc="/accessible-components.webp">
+  <!-- Meet the Team -->
+  <TeamCarousel />
+
+  <ContentMedia imgSrc="/share-your-story.png">
     <Heading level="h2">Share your story</Heading>
     <p class="text-2xl">
       Are you a South Asian woman with lived experience of rare disease? We'd love to have you on the show. Your story
@@ -94,14 +61,8 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
     </Link>
   </ContentMedia>
 
-  <!-- Featured Episodes (3 most recent) -->
-  <FeaturedEpisodes />
-
-  <!-- Meet the Team -->
-  <TeamCarousel />
-
   <!-- Blog posts -->
-  <FeaturedPosts />
+  <!-- <FeaturedPosts /> -->
 
   <!-- FAQ -->
   <section class="my-64">

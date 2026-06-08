@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { z } from 'astro/zod'
 import { glob } from 'astro/loaders'
+import { youtubeLoader } from './lib/youtubeLoader'
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
@@ -12,8 +13,10 @@ const projects = defineCollection({
   }),
 })
 
+// Switch to youtubeLoader() once your YouTube channel has public videos
 const episodes = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/episodes' }),
+  loader: youtubeLoader(),
+  // loader: glob({ pattern: '**/*.md', base: './src/content/episodes' }),
   schema: z.object({
     title: z.string(),
     youtubeUrl: z.string().url(),
@@ -41,34 +44,35 @@ const blog = defineCollection({
 // Fixed team collection
 const team = defineCollection({
   loader: () => [
+
+    {
+      id: 'niveda',
+      name: 'Niveda Kiridaran',
+      role: 'Co-Founder & Host',
+      bio: "Rare Disease advocate, living with Osteogenesis Imperfecta (OI). Co-founder and co-host of South Asian Women in Rare. Passionate about raising awareness through advocacy, storytelling, and community engagement. Building connections, and helping drive positive change for people living with rare conditions.",
+      initials: 'NK',
+      color: 'primary',
+      order: 1,
+
+      img_url: '/team/avatar.png',
+    },
     {
       id: 'parvathy',
       name: 'Parvathy Raman Krishnan',
-      role: 'Founder & Host',
-      bio: 'Passionate about amplifying South Asian voices in the rare disease space and building community where there was none.',
+      role: 'Co-Founder & Host',
+      bio: "Rare Disease specialist and a healthcare professional with a Masters in Clinical Nutrition. A dedicated patient advocate and caregiver, inspired by her journey as a mother of two children with multiple rare and ultra-rare conditions. Passionate about supporting families, advancing patient engagement, and creating spaces where lived experiences are heard and valued.",
       initials: 'PR',
-      color: 'primary',
-      order: 1,
+      color: 'secondary',
+      order: 2,
 
       // Public folder path
       img_url: '/team/avatar.png',
     },
     {
-      id: 'niveda',
-      name: 'Niveda Kiridaran',
-      role: 'Research & Partnerships',
-      bio: 'Building bridges between patient communities and medical researchers working on rare conditions.',
-      initials: 'AR',
-      color: 'secondary',
-      order: 2,
-
-      img_url: '/team/avatar.png',
-    },
-    {
-      id: 'beth',
-      name: 'Beth',
-      role: 'Content & Storytelling',
-      bio: "Shaping each episode so that every guest's story is told with the care and nuance it deserves.",
+      id: 'bethany',
+      name: 'Bethany',
+      role: 'Content & Support',
+      bio: "Librarian, poet and creative writer. Providing support for South Asian Women in Rare ensuring the content is clear, engaging and accessible. Best friends with Niveda living with Osteogenesis Imperfecta (OI) and is passionate about learning and supporting for the awareness and understanding of rare conditions",
       initials: 'B',
       color: 'primary',
       order: 3,
@@ -79,7 +83,7 @@ const team = defineCollection({
       id: 'mehul-jain',
       name: 'Mehul Jain',
       role: 'Web Developer',
-      bio: 'Rare Disease Advocate and Software Engineer',
+      bio: "Rare Disease Advocate and Software Engineer living with Hemophilia. Loves building solutions, networking and travel and fitness. Supporting South Asian Women in Rare through his technical expertise.  ",
       initials: 'MJ',
       color: 'secondary',
       order: 4,
