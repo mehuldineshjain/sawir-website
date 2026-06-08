@@ -39,7 +39,7 @@ const viteConfig = {
 // https://astro.build/config
 export default defineConfig({
   compressHTML: true,
-  site: 'https://accessible-astro-starter.incluud.dev',
+  site: 'https://south-asian-women-in-rare.netlify.app',
   integrations: [compress(), icon(), mdx(), sitemap()],
   image: {
     domains: ['img.youtube.com'],

@@ -108,17 +108,22 @@ const team = teamEntries.sort((a, b) => (a.data.order || 0) - (b.data.order || 0
       })
     }
 
-    function scrollToCard(index) {
+    function scrollToCard(index, animate = true) {
       const visible = getVisibleCount()
       const max = Math.max(0, total - visible)
 
       current = Math.max(0, Math.min(index, max))
 
-      cards[current]?.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'start',
-        block: 'nearest',
-      })
+      if (animate) {
+        cards[current]?.scrollIntoView({
+          behavior: 'smooth',
+          inline: 'start',
+          block: 'nearest',
+        })
+      } else {
+        // Reset carousel's own scroll without scrolling the page
+        carousel.scrollLeft = 0
+      }
 
       updateDots(current)
 
@@ -137,9 +142,9 @@ const team = teamEntries.sort((a, b) => (a.data.order || 0) - (b.data.order || 0
       })
     })
 
-    window.addEventListener('resize', () => scrollToCard(current))
+    window.addEventListener('resize', () => scrollToCard(current, false))
 
-    scrollToCard(0)
+    scrollToCard(0, false)
   }
 
   // Initialize on load
