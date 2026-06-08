@@ -31,44 +31,44 @@ const { icon = 'mdi:rocket', title = 'Title' }: Props = Astro.props
   </div>
 </div>
 
-<style lang="scss">
-  @use 'scss/base/breakpoint' as *;
-
+<style>
   .feature {
     position: relative;
     padding: var(--space-l);
     inline-size: calc(100% - var(--space-l));
+  }
 
-    > * {
-      position: relative;
-      z-index: 2;
-    }
+  .feature > * {
+    position: relative;
+    z-index: 2;
+  }
 
-    @include breakpoint(xl) {
+  @media (min-width: 1280px) {
+    .feature {
       inline-size: 100%;
     }
+  }
 
-    &::before,
-    &::after {
-      position: absolute;
-      content: '';
-    }
+  .feature::before,
+  .feature::after {
+    position: absolute;
+    content: '';
+  }
 
-    &::before {
-      z-index: 1;
-      inset: 0;
-      box-shadow: 0 0 0 6px var(--color-neutral-100);
-      border: 3px solid var(--color-neutral-700);
-      border-radius: var(--radius-l);
-      background-color: var(--color-neutral-100);
-    }
+  .feature::before {
+    z-index: 1;
+    inset: 0;
+    box-shadow: 0 0 0 6px var(--color-neutral-100);
+    border: 3px solid var(--color-neutral-700);
+    border-radius: var(--radius-l);
+    background-color: var(--color-neutral-100);
+  }
 
-    &::after {
-      z-index: 0;
-      inset: var(--space-m) -0.85rem -0.85rem 1rem;
-      border-radius: var(--radius-l);
-      background-color: var(--link-color);
-    }
+  .feature::after {
+    z-index: 0;
+    inset: var(--space-m) -0.85rem -0.85rem 1rem;
+    border-radius: var(--radius-l);
+    background-color: var(--link-color);
   }
 
   :global(.feature [data-icon]) {
