@@ -84,17 +84,30 @@ import { Icon } from 'astro-icon/components'
   </section>
 </DefaultLayout>
 
-<style lang="scss">
+<style>
   .feature-section {
-    background-color: light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    background-color: var(--color-neutral-200);
   }
 
   .quote-block {
-    background-color: light-dark(var(--color-neutral-200), var(--color-neutral-800));
-    border-left: 4px solid light-dark(var(--color-primary-400), var(--color-primary-300));
+    background-color: var(--color-neutral-200);
+    border-left: 4px solid var(--color-primary-400);
+  }
 
-    p {
-      color: light-dark(var(--color-neutral-700), var(--color-neutral-300));
-    }
+  .quote-block p {
+    color: var(--color-neutral-700);
+  }
+
+  :global(.darkmode) .feature-section {
+    background-color: var(--color-neutral-800);
+  }
+
+  :global(.darkmode) .quote-block {
+    background-color: var(--color-neutral-800);
+    border-left-color: var(--color-primary-300);
+  }
+
+  :global(.darkmode) .quote-block p {
+    color: var(--color-neutral-300);
   }
 </style>
