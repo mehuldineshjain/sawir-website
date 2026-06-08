@@ -21,7 +21,7 @@ interface Props {
 const { icon = 'mdi:rocket', title = 'Title' }: Props = Astro.props
 ---
 
-<div class="relative feature flex flex-col gap-4">
+<div class="relative feature flex flex-col gap-4 p-[var(--space-l)] w-[calc(100%-var(--space-l))] xl:w-full">
   <Icon aria-hidden="true" name={icon} />
   <div class="content">
     <Heading level="h3" size="h6" class="mb-2">{title}</Heading>
