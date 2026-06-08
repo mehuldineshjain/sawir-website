@@ -15,7 +15,7 @@ import { Icon } from 'astro-icon/components'
 
   <section class="my-16">
     <div class="container">
-      <div class="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-32">
+      <div class="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-8">
         <div class="space-content md:col-span-8">
           <Heading level="h2">Our Mission</Heading>
           <p class="lead text-xl">
@@ -41,9 +41,7 @@ import { Icon } from 'astro-icon/components'
         </div>
 
         <div class="quote-block space-content flex flex-col justify-center rounded-lg p-8 md:col-span-4">
-          <p class="font-serif text-2xl italic">
-            "Because every story matters. And every voice deserves to be heard."
-          </p>
+          <p class="font-serif text-2xl italic">"Because every story matters. And every voice deserves to be heard."</p>
         </div>
       </div>
     </div>
@@ -90,8 +88,8 @@ import { Icon } from 'astro-icon/components'
   }
 
   .quote-block {
-    background-color: var(--color-neutral-200);
     border-left: 4px solid var(--color-primary-400);
+    background-color: var(--color-neutral-200);
   }
 
   .quote-block p {
@@ -103,8 +101,8 @@ import { Icon } from 'astro-icon/components'
   }
 
   :global(.darkmode) .quote-block {
-    background-color: var(--color-neutral-800);
     border-left-color: var(--color-primary-300);
+    background-color: var(--color-neutral-800);
   }
 
   :global(.darkmode) .quote-block p {
