@@ -11,6 +11,9 @@ const navLinks = [
   { label: 'Contact', href: '/contact' },
 ]
 
+const navLinksLeft = navLinks.slice(0, Math.ceil(navLinks.length / 2))
+const navLinksRight = navLinks.slice(Math.ceil(navLinks.length / 2))
+
 const legalLinks = [
   { label: 'Accessibility statement', href: '/accessibility-statement' },
   { label: 'Sitemap', href: '/sitemap' },
@@ -21,22 +24,27 @@ const legalLinks = [
   <div class="accent-bar"></div>
   <section class="py-10">
     <div class="container">
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-        <div class="flex flex-col items-end gap-3 text-right">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-[1.4fr_1fr]">
+        <div class="flex flex-col items-center md:items-start gap-3 text-center md:text-left">
           <Logo loading="lazy" />
           <p class="footer-tagline">
             A space for South Asian women to share their experiences of living with or supporting
             someone with a rare disease.
           </p>
         </div>
-        <div class="flex justify-end gap-12 md:col-span-2">
-          <div class="flex flex-col items-end gap-2 text-right">
+        <div class="flex flex-col justify-center gap-12 md:flex-row md:items-start md:justify-start md:gap-16">
+          <div class="flex flex-col items-start gap-2 text-left">
             <p class="footer-heading">Navigate</p>
-            <ul class="flex flex-col gap-1">
-              {navLinks.map((link) => <li><Link href={link.href}>{link.label}</Link></li>)}
-            </ul>
+            <div class="grid grid-cols-2 gap-4">
+              <ul class="flex flex-col gap-1">
+                {navLinksLeft.map((link) => <li><Link href={link.href}>{link.label}</Link></li>)}
+              </ul>
+              <ul class="flex flex-col gap-1">
+                {navLinksRight.map((link) => <li><Link href={link.href}>{link.label}</Link></li>)}
+              </ul>
+            </div>
           </div>
-          <div class="flex flex-col items-end gap-2 text-right">
+          <div class="flex flex-col items-start gap-2 text-left">
             <p class="footer-heading">More</p>
             <ul class="flex flex-col gap-1">
               {legalLinks.map((link) => <li><Link href={link.href}>{link.label}</Link></li>)}
