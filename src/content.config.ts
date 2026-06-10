@@ -54,7 +54,7 @@ const team = defineCollection({
       color: 'primary',
       order: 1,
 
-      img_url: '/team/avatar.png',
+      img_url: '/team/Niveda.png',
     },
     {
       id: 'parvathy',
@@ -66,7 +66,7 @@ const team = defineCollection({
       order: 2,
 
       // Public folder path
-      img_url: '/team/avatar.png',
+      img_url: '/team/Parvathy.png',
     },
     {
       id: 'bethany',
@@ -77,7 +77,7 @@ const team = defineCollection({
       color: 'primary',
       order: 3,
 
-      img_url: '/team/avatar.png',
+      img_url: '/team/Beth.svg',
     },
     {
       id: 'mehul-jain',
@@ -88,7 +88,7 @@ const team = defineCollection({
       color: 'secondary',
       order: 4,
 
-      img_url: '/team/avatar-man.png',
+      img_url: '/team/Mehul.png',
     },
   ],
 
