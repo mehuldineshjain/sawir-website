@@ -9,6 +9,21 @@ import { Accordion, AccordionItem, Heading, Link } from 'accessible-astro-compon
 import { Icon } from 'astro-icon/components'
 
 // Get the latest episode for the player
+
+// PodcastSeries structured data (homepage). Real copy reused from on-page content.
+const podcastSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastSeries',
+  '@id': new URL('/#podcast', Astro.site).href,
+  name: 'South Asian Women in Rare',
+  url: new URL('/', Astro.site).href,
+  description:
+    'A podcast amplifying the voices of South Asian women navigating the rare disease world, exploring honest conversations about lived experience, culture, family, healthcare, and identity.',
+  inLanguage: 'en',
+  publisher: {
+    '@id': new URL('/#organization', Astro.site).href,
+  },
+}
 ---
 
 <DefaultLayout
@@ -16,6 +31,8 @@ import { Icon } from 'astro-icon/components'
   description="A space for South Asian women to share their experiences living with or supporting someone with a rare disease."
   useTitleTemplate={false}
 >
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(podcastSchema)} />
+
   <Hero />
 
   <!-- Why this space exists -->
@@ -49,7 +66,10 @@ import { Icon } from 'astro-icon/components'
   <!-- Meet the Team -->
   <TeamCarousel />
 
-  <ContentMedia imgSrc="/share-your-story.png">
+  <ContentMedia
+    imgSrc="/share-your-story.png"
+    imgAlt="A smiling South Asian woman sitting in a bright room, warmly inviting listeners to share their rare disease story"
+  >
     <Heading level="h2">Share your story</Heading>
     <p class="text-2xl">
       Are you a South Asian woman with lived experience of rare disease? We'd love to have you on the show. Your story

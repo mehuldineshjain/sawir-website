@@ -54,6 +54,17 @@ const {
 // If image is an ImageMetadata object, use its src, otherwise treat as string path
 const imagePath = image ? (typeof image === 'string' ? image : image.src) : '/social-preview-image.png'
 const imageUrl = new URL(imagePath, Astro.site).href
+
+// Organization structured data (site-wide). Uses real site name/description from theme config.
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': new URL('/#organization', Astro.site).href,
+  name: themeConfig.seo.title,
+  url: new URL('/', Astro.site).href,
+  logo: new URL('/Logo-Light.svg', Astro.site).href,
+  description: themeConfig.seo.description,
+}
 ---
 
 <html lang="en" dir="ltr">
@@ -114,6 +125,12 @@ const imageUrl = new URL(imagePath, Astro.site).href
         ],
       }}
     />
+
+    <!-- Organization structured data (Schema.org JSON-LD) -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <!-- Page-specific head content (e.g. additional structured data) -->
+    <slot name="head" />
 
     <!-- Enable Astro View Transitions for all browsers -->
     <ClientRouter />

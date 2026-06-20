@@ -5,7 +5,9 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Force www as canonical host (apex -> www, 301)
 [[redirects]]
-  from = "/*"
-  to = "/404"
-  status = 404
+  from = "https://southasianwomeninrare.org/*"
+  to = "https://www.southasianwomeninrare.org/:splat"
+  status = 301
+  force = true

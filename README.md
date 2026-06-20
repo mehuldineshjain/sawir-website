@@ -1,11 +1,11 @@
 # South Asian Women in Rare — Website
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b2c82c74-40af-4df2-8f3a-be6094e5628c/deploy-status)](https://south-asian-women-in-rare.netlify.app)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b2c82c74-40af-4df2-8f3a-be6094e5628c/deploy-status)](https://southasianwomeninrare.org)
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/small.svg)](https://astro.build)
 
 The official website for **South Asian Women in Rare** — a podcast platform amplifying the voices of South Asian women navigating the rare disease world. Built and maintained by [Mehul Jain](https://github.com/mehulj999).
 
-**Live site:** [south-asian-women-in-rare.netlify.app](https://south-asian-women-in-rare.netlify.app)
+**Live site:** [southasianwomeninrare.org](https://southasianwomeninrare.org)
 
 ---
 

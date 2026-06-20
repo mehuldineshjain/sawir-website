@@ -53,6 +53,7 @@ const team = teamEntries.sort((a, b) => (a.data.order || 0) - (b.data.order || 0
             <div class="carousel-item">
               <Card
                 img={member.data.img_url || 'https://placehold.co/400x400?text=Avatar'}
+                imageAlt={`${member.data.name}, ${member.data.role}`}
                 width={400}
                 height={400}
                 url="#"

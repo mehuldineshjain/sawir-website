@@ -12,23 +12,27 @@ interface Props {
    */
   imgSrc: string
   /**
+   * Alt text describing the image for screen readers
+   */
+  imgAlt: string
+  /**
    * Whether to display the image on the right side instead of the left
    * @default false
    */
   reverseImg?: boolean
 }
 
-const { imgSrc, reverseImg = false }: Props = Astro.props
+const { imgSrc, imgAlt, reverseImg = false }: Props = Astro.props
 ---
 
 <section class="my-64">
   <div class="container">
     <div class="grid grid-cols-1 gap-24 md:grid-cols-2">
-      {!reverseImg ? <Media class="rounded-lg" src={imgSrc} /> : ''}
+      {!reverseImg ? <Media class="rounded-lg" src={imgSrc} alt={imgAlt} /> : ''}
       <div class="space-content flex flex-col justify-center">
         <slot />
       </div>
-      {reverseImg ? <Media class="rounded-lg" src={imgSrc} /> : ''}
+      {reverseImg ? <Media class="rounded-lg" src={imgSrc} alt={imgAlt} /> : ''}
     </div>
   </div>
 </section>
