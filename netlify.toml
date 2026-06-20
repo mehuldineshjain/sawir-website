@@ -7,7 +7,7 @@
 
 # Force www as canonical host (apex -> www, 301)
 [[redirects]]
-  from = "https://southasianwomeninrare.org/*"
-  to = "https://www.southasianwomeninrare.org/:splat"
+  from = "https://www.southasianwomeninrare.org/*"
+  to = "https://southasianwomeninrare.org/:splat"
   status = 301
   force = true

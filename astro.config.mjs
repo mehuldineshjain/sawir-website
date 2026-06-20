@@ -39,7 +39,7 @@ const viteConfig = {
 // https://astro.build/config
 export default defineConfig({
   compressHTML: true,
-  site: 'https://www.southasianwomeninrare.org',
+  site: 'https://southasianwomeninrare.org',
   integrations: [compress(), icon(), mdx(), sitemap()],
   image: {
     domains: ['img.youtube.com'],
