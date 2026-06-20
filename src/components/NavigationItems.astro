@@ -50,7 +50,7 @@ import { Icon } from 'astro-icon/components'
   {
     themeConfig.navigation.darkmode && (
       <li class="menu-item type-icon animate-rotate">
-        <DarkMode>
+        <DarkMode initialMode="light">
           <Icon aria-hidden="true" name="lucide:moon" slot="light" />
           <Icon aria-hidden="true" name="lucide:sun" slot="dark" />
         </DarkMode>
