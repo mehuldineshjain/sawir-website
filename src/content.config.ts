@@ -26,6 +26,7 @@ const episodes = defineCollection({
     publishDate: z.date().optional(),
     episodeNumber: z.number().optional(),
     guestName: z.string().optional(),
+    spotifyUrl: z.string().url().optional(),
   }),
 })
 

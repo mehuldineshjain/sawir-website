@@ -63,6 +63,21 @@ export default defineConfig({
         access: 'secret',
         optional: true,
       }),
+      SPOTIFY_CLIENT_ID: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
+      SPOTIFY_CLIENT_SECRET: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
+      SPOTIFY_SHOW_ID: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
     },
   },
 })

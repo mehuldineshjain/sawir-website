@@ -2,7 +2,8 @@
 import DefaultLayout from '@layouts/DefaultLayout.astro'
 import PageHeader from '@components/PageHeader.astro'
 import SocialShares from '@components/SocialShares.astro'
-import { Badge, Heading } from 'accessible-astro-components'
+import { Badge, Heading, Link } from 'accessible-astro-components'
+import { Icon } from 'astro-icon/components'
 import { getCollection, render } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
 // import YouTubePlayer from '@components/YouTubePlayer.astro'
@@ -54,7 +55,7 @@ const formattedDate = episode.data.publishDate
     <div class="narrow container">
       <!-- Meta -->
       <div class="mb-6 flex flex-wrap items-center gap-3">
-        {episode.data.episodeNumber && <Badge>Episode {episode.data.episodeNumber}</Badge>}
+        {episode.data.episodeNumber != null && <Badge>Episode {episode.data.episodeNumber}</Badge>}
         {episode.data.tags.map((tag) => <Badge>{tag}</Badge>)}
         {formattedDate && <span class="text-sm text-neutral-500">{formattedDate}</span>}
       </div>
@@ -70,6 +71,25 @@ const formattedDate = episode.data.publishDate
               allowfullscreen/>
 
             {/* <YouTubePlayer url={episode.data.youtubeUrl} title={episode.data.title} /> */}
+          </div>
+        )
+      }
+
+      <!-- Listen on Spotify (only when a matching Spotify episode exists) -->
+      {
+        episode.data.spotifyUrl && (
+          <div class="mb-10">
+            <Link
+              href={episode.data.spotifyUrl}
+              isButton
+              isExternal
+              type="secondary"
+              animateOnHover
+              animationType="boop"
+            >
+              <Icon aria-hidden="true" name="spotify" size="1.5rem" />
+              Listen on Spotify
+            </Link>
           </div>
         )
       }

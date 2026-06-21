@@ -23,9 +23,16 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
             <Icon aria-hidden="true" name="lucide:star" size="1.5rem" />
             Latest Episode
           </Link>
-          <Link href="/episodes" isButton type="secondary" animateOnHover animationType="boop">
-            <Icon aria-hidden="true" name="lucide:bookmark" size="1.5rem" />
-            See all Episodes
+          <Link
+            href="https://open.spotify.com/show/033BP1wbSxThsM7iHyfzP0"
+            isButton
+            isExternal
+            type="secondary"
+            animateOnHover
+            animationType="boop"
+          >
+            <Icon aria-hidden="true" name="spotify" size="1.5rem" />
+            Listen on Spotify
           </Link>
         </div>
       </div>

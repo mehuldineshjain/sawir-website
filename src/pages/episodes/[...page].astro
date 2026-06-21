@@ -2,6 +2,7 @@
 import DefaultLayout from '@layouts/DefaultLayout.astro'
 import PageHeader from '@components/PageHeader.astro'
 import { Badge, Card, Heading, Link, Pagination } from 'accessible-astro-components'
+import { Icon } from 'astro-icon/components'
 import { getCollection } from 'astro:content'
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
@@ -84,10 +85,21 @@ const { page, uniqueTags } = Astro.props
                 fullHeight={true}
               >
                 <span slot="meta">
-                  {episode.data.episodeNumber && <Badge>Ep. {episode.data.episodeNumber}</Badge>}
+                  {episode.data.episodeNumber != null && <Badge>Ep. {episode.data.episodeNumber}</Badge>}
                   {episode.data.tags.map((tag) => (
                     <Badge>{tag}</Badge>
                   ))}
+                  {episode.data.spotifyUrl && (
+                    <a
+                      class="spotify-link"
+                      href={episode.data.spotifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Listen to ${episode.data.title} on Spotify, opens in a new tab`}
+                    >
+                      <Icon aria-hidden="true" name="spotify" size={20} />
+                    </a>
+                  )}
                 </span>
                 {episode.data.description}
               </Card>
@@ -113,3 +125,17 @@ const { page, uniqueTags } = Astro.props
     </div>
   </section>
 </DefaultLayout>
+
+<style>
+  .spotify-link {
+    display: inline-flex;
+    align-items: center;
+    color: #1db954;
+    transition: transform 0.15s ease;
+  }
+
+  .spotify-link:hover,
+  .spotify-link:focus-visible {
+    transform: scale(1.15);
+  }
+</style>
