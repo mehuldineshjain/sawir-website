@@ -21,7 +21,10 @@ import { Icon } from 'astro-icon/components'
   <section class="container mb-24">
     <div class="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-32">
       <div class="space-content">
-        <Form name="contact" action="/thank-you" method="post">
+        <Form name="contact" action="/thank-you" method="post" data-netlify="true">
+          {/* Required by Netlify for AJAX submissions */}
+          <input type="hidden" name="form-name" value="contact" />
+
           <Input
             name="fullname"
             label="Full name"
@@ -99,4 +102,149 @@ import { Icon } from 'astro-icon/components'
       </div>
     </div>
   </section>
+
+  <script>
+    function setupContactForm() {
+      const form = document.querySelector<HTMLFormElement>('form[name="contact"]')
+      if (!form || form.dataset.netlifyInit === 'true') return
+      form.dataset.netlifyInit = 'true'
+
+      // Override the submit method called by the Form component after validation passes.
+      // Posts to Netlify via fetch instead of a page redirect, then shows a toast.
+      form.submit = async () => {
+        const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')
+        if (submitBtn) submitBtn.disabled = true
+
+        try {
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form) as any).toString(),
+          })
+          form.reset()
+          showToast()
+        } catch {
+          alert('Sorry, something went wrong. Please email us at southasianwomeninrare@gmail.com.')
+        } finally {
+          if (submitBtn) submitBtn.disabled = false
+        }
+      }
+    }
+
+    function showToast() {
+      // Remove any existing toast
+      document.getElementById('contact-toast')?.remove()
+
+      const toast = document.createElement('div')
+      toast.id = 'contact-toast'
+      toast.setAttribute('role', 'status')
+      toast.setAttribute('aria-live', 'polite')
+      toast.innerHTML = `
+        <span class="toast-icon">✓</span>
+        <div>
+          <strong>Message sent!</strong>
+          <p>Thanks for reaching out. We'll get back to you soon.</p>
+        </div>
+        <button class="toast-close" aria-label="Dismiss notification">✕</button>
+      `
+      document.body.appendChild(toast)
+
+      // Trigger enter animation
+      requestAnimationFrame(() => toast.classList.add('toast--visible'))
+
+      const dismiss = () => {
+        toast.classList.remove('toast--visible')
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true })
+      }
+
+      toast.querySelector('.toast-close')!.addEventListener('click', dismiss)
+
+      // Auto-dismiss after 5 seconds
+      setTimeout(dismiss, 5000)
+    }
+
+    document.addEventListener('astro:page-load', setupContactForm)
+  </script>
+
+  <style is:global>
+    #contact-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      max-width: 22rem;
+      padding: 1rem 1.25rem;
+      border-radius: 0.75rem;
+      background: var(--foreground-color, #1a1a1a);
+      color: var(--background-color, #fff);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      opacity: 0;
+      transform: translateY(1rem);
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    #contact-toast.toast--visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #contact-toast .toast-icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 50%;
+      background: var(--color-primary, #e6a23c);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    #contact-toast strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    #contact-toast p {
+      margin: 0;
+      font-size: 0.875rem;
+      opacity: 0.85;
+    }
+
+    #contact-toast .toast-close {
+      flex-shrink: 0;
+      margin-left: auto;
+      padding: 0.1rem 0.3rem;
+      background: transparent;
+      border: none;
+      color: inherit;
+      opacity: 0.6;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    #contact-toast .toast-close:hover {
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      #contact-toast {
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+        bottom: 1rem;
+      }
+    }
+  </style>
 </DefaultLayout>
