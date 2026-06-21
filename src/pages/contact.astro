@@ -21,7 +21,20 @@ import { Icon } from 'astro-icon/components'
   <section class="container mb-24">
     <div class="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-32">
       <div class="space-content">
-        <Form name="contact" action="/thank-you" method="post" data-netlify="true">
+        {/*
+          Static form for Netlify build-time detection. The visible form below is rendered by the
+          accessible-astro `Form` component, which strips the `name` attribute — so Netlify can't
+          detect it. This hidden twin registers the "contact" form + its fields with Netlify.
+        */}
+        <form name="contact" data-netlify="true" hidden aria-hidden="true">
+          <input type="text" name="fullname" />
+          <input type="email" name="email" />
+          <input type="tel" name="phone" />
+          <textarea name="message"></textarea>
+          <input type="radio" name="identity" value="Patient" />
+        </form>
+
+        <Form name="contact" class="contact-form" action="/thank-you" method="post" data-netlify="true">
           {/* Required by Netlify for AJAX submissions */}
           <input type="hidden" name="form-name" value="contact" />
 
@@ -105,7 +118,7 @@ import { Icon } from 'astro-icon/components'
 
   <script>
     function setupContactForm() {
-      const form = document.querySelector<HTMLFormElement>('form[name="contact"]')
+      const form = document.querySelector<HTMLFormElement>('form.contact-form')
       if (!form || form.dataset.netlifyInit === 'true') return
       form.dataset.netlifyInit = 'true'
 
