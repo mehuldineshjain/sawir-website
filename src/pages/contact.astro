@@ -21,11 +21,13 @@ import { Icon } from 'astro-icon/components'
   <section class="container mb-24">
     <div class="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-32">
       <div class="space-content">
-        {/*
+        {
+          /*
           Static form for Netlify build-time detection. The visible form below is rendered by the
           accessible-astro `Form` component, which strips the `name` attribute — so Netlify can't
           detect it. This hidden twin registers the "contact" form + its fields with Netlify.
-        */}
+        */
+        }
         <form name="contact" data-netlify="true" hidden aria-hidden="true">
           <input type="text" name="fullname" />
           <input type="email" name="email" />
@@ -88,13 +90,14 @@ import { Icon } from 'astro-icon/components'
         <Heading level="h4">Follow Our Journey</Heading>
         <ul class="mt-2 flex flex-wrap gap-4">
           <li>
-            <Link href="https://facebook.com" isButton isExternal hideIcon animateOnHover animationType="boop">
-              <Icon aria-hidden="true" name="lucide:facebook" size={32} />
-              <span class="sr-only">Go to our Facebook page, opens in a new tab</span>
-            </Link>
-          </li>
-          <li>
-            <Link href="https://instagram.com" isButton isExternal hideIcon animateOnHover animationType="boop">
+            <Link
+              href="https://www.instagram.com/southasianwomeninrare"
+              isButton
+              isExternal
+              hideIcon
+              animateOnHover
+              animationType="boop"
+            >
               <Icon aria-hidden="true" name="lucide:instagram" size={32} />
               <span class="sr-only">Go to our Instagram profile, opens in a new tab</span>
             </Link>
@@ -188,68 +191,68 @@ import { Icon } from 'astro-icon/components'
 
   <style is:global>
     #contact-toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 9999;
       display: flex;
+      position: fixed;
+      right: 2rem;
+      bottom: 2rem;
       align-items: flex-start;
       gap: 0.75rem;
-      max-width: 22rem;
-      padding: 1rem 1.25rem;
-      border-radius: 0.75rem;
-      background: var(--foreground-color, #1a1a1a);
-      color: var(--background-color, #fff);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-      opacity: 0;
       transform: translateY(1rem);
+      opacity: 0;
+      z-index: 9999;
       transition:
         opacity 0.3s ease,
         transform 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      border-radius: 0.75rem;
+      background: var(--foreground-color, #1a1a1a);
+      padding: 1rem 1.25rem;
+      max-width: 22rem;
       pointer-events: none;
+      color: var(--background-color, #fff);
     }
 
     #contact-toast.toast--visible {
-      opacity: 1;
       transform: translateY(0);
+      opacity: 1;
       pointer-events: auto;
     }
 
     #contact-toast .toast-icon {
-      flex-shrink: 0;
       display: flex;
-      align-items: center;
+      flex-shrink: 0;
       justify-content: center;
-      width: 1.75rem;
-      height: 1.75rem;
+      align-items: center;
       border-radius: 50%;
       background: var(--color-primary, #e6a23c);
+      width: 1.75rem;
+      height: 1.75rem;
       color: #fff;
-      font-size: 0.85rem;
       font-weight: bold;
+      font-size: 0.85rem;
     }
 
     #contact-toast strong {
       display: block;
-      font-size: 1rem;
       margin-bottom: 0.2rem;
+      font-size: 1rem;
     }
 
     #contact-toast p {
+      opacity: 0.85;
       margin: 0;
       font-size: 0.875rem;
-      opacity: 0.85;
     }
 
     #contact-toast .toast-close {
       flex-shrink: 0;
-      margin-left: auto;
-      padding: 0.1rem 0.3rem;
-      background: transparent;
-      border: none;
-      color: inherit;
       opacity: 0.6;
       cursor: pointer;
+      margin-left: auto;
+      border: none;
+      background: transparent;
+      padding: 0.1rem 0.3rem;
+      color: inherit;
       font-size: 0.85rem;
       line-height: 1;
     }
@@ -261,9 +264,9 @@ import { Icon } from 'astro-icon/components'
     @media (max-width: 480px) {
       #contact-toast {
         right: 1rem;
+        bottom: 1rem;
         left: 1rem;
         max-width: none;
-        bottom: 1rem;
       }
     }
   </style>
