@@ -49,7 +49,7 @@ const team = defineCollection({
     {
       id: 'niveda',
       name: 'Niveda Kiridaran',
-      role: 'Co-Founder & Host',
+      role: 'Founder & Host',
       bio: "Rare Disease advocate, living with Osteogenesis Imperfecta (OI). Co-founder and co-host of South Asian Women in Rare. Passionate about raising awareness through advocacy, storytelling, and community engagement. Building connections, and helping drive positive change for people living with rare conditions.",
       initials: 'NK',
       color: 'primary',
@@ -60,7 +60,7 @@ const team = defineCollection({
     {
       id: 'parvathy',
       name: 'Parvathy Raman Krishnan',
-      role: 'Co-Founder & Host',
+      role: 'Co-Host',
       bio: "Rare Disease specialist and a healthcare professional with a Masters in Clinical Nutrition. A dedicated patient advocate and caregiver, inspired by her journey as a mother of two children with multiple rare and ultra-rare conditions. Passionate about supporting families, advancing patient engagement, and creating spaces where lived experiences are heard and valued.",
       initials: 'PR',
       color: 'secondary',

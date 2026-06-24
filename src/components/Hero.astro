@@ -23,17 +23,31 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
             <Icon aria-hidden="true" name="lucide:star" size="1.5rem" />
             Latest Episode
           </Link>
-          <Link
-            href="https://open.spotify.com/show/033BP1wbSxThsM7iHyfzP0"
-            isButton
-            isExternal
-            type="secondary"
-            animateOnHover
-            animationType="boop"
-          >
-            <Icon aria-hidden="true" name="spotify" size="1.5rem" />
-            Listen on Spotify
-          </Link>
+          <div class="listen-dropdown">
+            <button
+              class="button button--filled type-secondary button--md"
+              id="listen-btn"
+              aria-expanded="false"
+              aria-controls="listen-menu"
+            >
+              <Icon aria-hidden="true" name="lucide:headphones" size="1.5rem" />
+              Listen on...
+            </button>
+            <div id="listen-menu" class="listen-menu" role="menu" aria-labelledby="listen-btn" hidden>
+              <a href="https://www.youtube.com/@SouthAsianWomeninRare" target="_blank" rel="noopener noreferrer" role="menuitem" class="listen-item">
+                <Icon aria-hidden="true" name="youtube" size="1.25rem" />
+                YouTube
+              </a>
+              <a href="https://open.spotify.com/show/033BP1wbSxThsM7iHyfzP0" target="_blank" rel="noopener noreferrer" role="menuitem" class="listen-item">
+                <Icon aria-hidden="true" name="spotify" size="1.25rem" />
+                Spotify
+              </a>
+              <a href="https://podcasts.apple.com/us/podcast/south-asian-women-in-rare/id1896945463" target="_blank" rel="noopener noreferrer" role="menuitem" class="listen-item">
+                <Icon aria-hidden="true" name="apple-podcast" size="1.25rem" />
+                Apple Podcasts
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="hero-logo hidden lg:block">
@@ -72,9 +86,101 @@ const latestEpisode = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.d
   </div>
 </section>
 
+<script>
+  const btn = document.getElementById('listen-btn')
+  const menu = document.getElementById('listen-menu')
+
+  btn?.addEventListener('click', (e) => {
+    e.stopPropagation()
+    const isOpen = btn.getAttribute('aria-expanded') === 'true'
+    btn.setAttribute('aria-expanded', String(!isOpen))
+    menu?.toggleAttribute('hidden', isOpen)
+  })
+
+  document.addEventListener('click', () => {
+    btn?.setAttribute('aria-expanded', 'false')
+    menu?.setAttribute('hidden', '')
+  })
+
+  menu?.addEventListener('click', (e) => e.stopPropagation())
+</script>
+
 <style lang="scss">
   h1 {
     text-wrap: unset;
+  }
+
+  .listen-dropdown {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .listen-dropdown button {
+    display: inline-flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2xs);
+    cursor: pointer;
+    border: 3px solid var(--color-secondary-border);
+    border-radius: var(--radius-s);
+    background-color: var(--color-secondary-bg);
+    padding: var(--space-xs) var(--space-s);
+    color: var(--color-secondary-text);
+    font-weight: 700;
+    font-size: inherit;
+    font-family: inherit;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition: all 0.2s var(--animation-timing);
+
+    &:hover,
+    &:focus-visible {
+      text-decoration-color: currentColor;
+      text-underline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      &:hover,
+      &:focus-visible {
+        translate: 0 -3px;
+      }
+    }
+  }
+
+  .listen-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    border: 3px solid var(--color-secondary-border);
+    border-radius: var(--radius-s);
+    background-color: var(--color-default-bg, var(--color-neutral-100));
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
+  }
+
+  .listen-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-xs) var(--space-s);
+    color: var(--color-default-text);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-secondary-bg);
+      outline: none;
+    }
   }
 
   .logo-dark {
