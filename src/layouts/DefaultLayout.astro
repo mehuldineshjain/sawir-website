@@ -153,10 +153,26 @@ const organizationSchema = {
       if (history.scrollRestoration) {
         history.scrollRestoration = 'manual'
       }
+      // Stay put when navigating between sort/paginated views of the same
+      // listing (e.g. /episodes → /episodes/oldest). Astro's ClientRouter
+      // scrolls to top itself in astro:after-swap; suppressing our own
+      // scrollTo isn't enough, so we capture the position before the swap and
+      // restore it afterwards. Our after-swap listener registers later than
+      // Astro's internal one, so it runs last and wins.
+      const episodesPattern = /^\/episodes(\/|$)/
+      document.addEventListener('astro:before-swap', (e) => {
+        window.__skipScroll = episodesPattern.test(e.from.pathname) && episodesPattern.test(e.to.pathname)
+        if (window.__skipScroll) window.__scrollY = window.scrollY
+      })
+      document.addEventListener('astro:after-swap', () => {
+        if (window.__skipScroll) window.scrollTo({ top: window.__scrollY, left: 0, behavior: 'instant' })
+      })
       document.addEventListener('astro:page-load', () => {
-        if (!window.location.hash) {
-          window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        if (window.location.hash || window.__skipScroll) {
+          window.__skipScroll = false
+          return
         }
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
       })
     </script>
     <style lang="scss" is:global>
