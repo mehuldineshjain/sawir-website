@@ -1,0 +1,18 @@
+name: Scheduled Netlify Rebuild
+
+# Weekly fallback / self-heal. New uploads are normally pushed in real time via
+# the WebSub callback (netlify/functions/youtube-webhook.ts). This unconditional
+# rebuild covers the rare case of a missed push or a lapsed subscription.
+
+on:
+  schedule:
+    - cron: '0 1 * * 1' # Mondays, 01:00 UTC
+  workflow_dispatch: # allow manual trigger from GitHub Actions UI
+
+jobs:
+  trigger-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build
+        run: |
+          curl --fail -s -X POST "${{ secrets.NETLIFY_BUILD_HOOK }}"

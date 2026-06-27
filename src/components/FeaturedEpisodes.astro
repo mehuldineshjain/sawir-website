@@ -1,6 +1,7 @@
 ---
 import { Card, Heading, Link, Badge } from 'accessible-astro-components'
 import { getCollection } from 'astro:content'
+import { sortEpisodesByRecency } from '../lib/sortEpisodes'
 
 function getYoutubeThumbnail(url: string): string {
   const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
@@ -8,7 +9,7 @@ function getYoutubeThumbnail(url: string): string {
 }
 
 const episodes = await getCollection('episodes')
-const featured = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.episodeNumber ?? 0)).slice(0, 3)
+const featured = sortEpisodesByRecency(episodes).slice(0, 3)
 ---
 
 <section class="my-64">
@@ -36,7 +37,7 @@ const featured = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.e
                   <Badge>{tag}</Badge>
                 ))}
               </span>
-              {episode.data.description}
+              <p class="episode-excerpt">{episode.data.description}</p>
             </Card>
           </li>
         ))
@@ -44,3 +45,14 @@ const featured = episodes.sort((a, b) => (b.data.episodeNumber ?? 0) - (a.data.e
     </ul>
   </div>
 </section>
+
+<style>
+  /* Clamp long descriptions so every card is the same height; overflow ends in "…". */
+  .episode-excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

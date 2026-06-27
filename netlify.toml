@@ -5,6 +5,10 @@
 [build.environment]
   NODE_VERSION = "22"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Force www as canonical host (apex -> www, 301)
 [[redirects]]
   from = "https://www.southasianwomeninrare.org/*"

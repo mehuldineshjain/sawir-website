@@ -1,0 +1,25 @@
+name: Renew YouTube WebSub subscription
+
+# Re-subscribes our Netlify callback to YouTube's PubSubHubbub hub so new uploads
+# keep pushing a notification (which triggers a Netlify rebuild). The lease the hub
+# grants is short-lived, so we renew daily. This is a plain curl to the hub — it
+# uses NO YouTube Data API quota.
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # daily, 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Subscribe / renew WebSub lease
+        run: |
+          curl --fail -sS -X POST https://pubsubhubbub.appspot.com/subscribe \
+            --data-urlencode "hub.mode=subscribe" \
+            --data-urlencode "hub.topic=https://www.youtube.com/xml/feeds/videos.xml?channel_id=${{ secrets.YOUTUBE_CHANNEL_ID }}" \
+            --data-urlencode "hub.callback=https://southasianwomeninrare.org/.netlify/functions/youtube-webhook" \
+            --data-urlencode "hub.verify=async" \
+            --data-urlencode "hub.secret=${{ secrets.WEBSUB_SECRET }}" \
+            --data-urlencode "hub.lease_seconds=864000"

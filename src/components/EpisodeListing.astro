@@ -1,0 +1,161 @@
+---
+import { Badge, Card, Heading, Link, Pagination } from 'accessible-astro-components'
+import { Icon } from 'astro-icon/components'
+import type { Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import type { EpisodeOrder } from '../lib/sortEpisodes'
+
+interface Props {
+  page: Page<CollectionEntry<'episodes'>>
+  uniqueTags: { label: string; slug: string }[]
+  order: EpisodeOrder
+  // Base path for this order's first/last pagination links, e.g. '/episodes' or '/episodes/oldest'.
+  basePath: string
+}
+
+const { page, uniqueTags, order, basePath } = Astro.props
+
+function getYoutubeThumbnail(url: string): string {
+  const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
+  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : '/placeholder.png'
+}
+---
+
+<section class="my-12">
+  <div class="container">
+    {
+      uniqueTags.length > 0 && (
+        <>
+          <Heading level="h2" size="h5" class="mb-2">
+            Filter by topic
+          </Heading>
+          <div class="flex flex-wrap gap-4">
+            {uniqueTags.map((tag) => (
+              <Link href={`/episodes/tag/${tag.slug}`}>{tag.label}</Link>
+            ))}
+          </div>
+        </>
+      )
+    }
+
+    <div class="mt-8 flex flex-wrap items-center gap-2">
+      <span class="text-sm font-bold">Sort:</span>
+      <div class="sort-toggle" role="group" aria-label="Sort episodes by publish date">
+        <a href="/episodes" class="sort-option" aria-current={order === 'newest' ? 'true' : undefined}>
+          Newest first
+        </a>
+        <a href="/episodes/oldest" class="sort-option" aria-current={order === 'oldest' ? 'true' : undefined}>
+          Oldest first
+        </a>
+      </div>
+    </div>
+
+    <p class="mt-4 text-sm">
+      <em>Episode {page.start + 1} through {page.end + 1} of {page.total} total episodes</em>
+    </p>
+
+    <ul class="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        page.data.map((episode) => (
+          <li>
+            <Card
+              img={getYoutubeThumbnail(episode.data.youtubeUrl)}
+              imageAlt={`Thumbnail for ${episode.data.title}`}
+              url={`/episodes/${episode.id}`}
+              title={episode.data.title}
+              headingLevel="h2"
+              footer={`Guest: ${episode.data.guestName ?? episode.data.author}`}
+              fullHeight={true}
+            >
+              <span slot="meta">
+                {episode.data.episodeNumber != null && <Badge>Ep. {episode.data.episodeNumber}</Badge>}
+                {episode.data.tags.map((tag) => (
+                  <Badge>{tag}</Badge>
+                ))}
+                {episode.data.spotifyUrl && (
+                  <a
+                    class="spotify-link"
+                    href={episode.data.spotifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Listen to ${episode.data.title} on Spotify, opens in a new tab`}
+                  >
+                    <Icon aria-hidden="true" name="spotify" size={20} />
+                  </a>
+                )}
+              </span>
+              <p class="episode-excerpt">{episode.data.description}</p>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      page.lastPage > 1 && (
+        <div class="mt-12 grid place-content-center">
+          <Pagination
+            firstPage={page.url.prev ? basePath : null}
+            previousPage={page.url.prev ?? null}
+            nextPage={page.url.next ?? null}
+            lastPage={page.url.next ? `${basePath}/${page.lastPage}` : null}
+            currentPage={`${page.currentPage}`}
+            totalPages={`${page.lastPage}`}
+            ariaLabel="Episodes pagination"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  /* Clamp long descriptions so every card is the same height; overflow ends in "…". */
+  .episode-excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .sort-toggle {
+    display: inline-flex;
+    overflow: hidden;
+    border: 1px solid var(--color-primary-200, #ccc);
+    border-radius: 0.5rem;
+  }
+
+  .sort-option {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sort-option + .sort-option {
+    border-left: 1px solid var(--color-primary-200, #ccc);
+  }
+
+  .sort-option[aria-current='true'] {
+    background-color: var(--color-primary-100, #efefef);
+    font-weight: 700;
+  }
+
+  .sort-option:hover,
+  .sort-option:focus-visible {
+    background-color: var(--color-primary-100, #efefef);
+  }
+
+  .spotify-link {
+    display: inline-flex;
+    align-items: center;
+    color: #1db954;
+    transition: transform 0.15s ease;
+  }
+
+  .spotify-link:hover,
+  .spotify-link:focus-visible {
+    transform: scale(1.15);
+  }
+</style>

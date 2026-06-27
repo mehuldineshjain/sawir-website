@@ -6,6 +6,7 @@ import { getCollection } from 'astro:content'
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { slugify } from '@utils/slugify'
+import { sortEpisodesByRecency } from '../../../../lib/sortEpisodes'
 
 function getYoutubeThumbnail(url: string): string {
   const match = url.match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
@@ -25,7 +26,9 @@ export const getStaticPaths = (async ({ paginate }) => {
   const allPaginatedPages = []
 
   for (const tag of uniqueTags) {
-    const filtered = episodes.filter((ep) => ep.data.tags.map((t) => slugify(t)).includes(tag.slug))
+    const filtered = sortEpisodesByRecency(
+      episodes.filter((ep) => ep.data.tags.map((t) => slugify(t)).includes(tag.slug)),
+    )
 
     const pages = paginate(filtered, {
       pageSize: 6,
@@ -105,7 +108,7 @@ const { page, currentTag, uniqueTags } = Astro.props
                     return isCurrent ? <Badge class="bg-primary text-white">{tag}</Badge> : <Badge>{tag}</Badge>
                   })}
                 </span>
-                {episode.data.description}
+                <p class="episode-excerpt">{episode.data.description}</p>
               </Card>
             </li>
           ))
@@ -130,3 +133,14 @@ const { page, currentTag, uniqueTags } = Astro.props
     </div>
   </section>
 </DefaultLayout>
+
+<style>
+  /* Clamp long descriptions so every card is the same height; overflow ends in "…". */
+  .episode-excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

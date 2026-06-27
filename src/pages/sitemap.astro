@@ -3,9 +3,10 @@ import DefaultLayout from '@layouts/DefaultLayout.astro'
 import PageHeader from '@components/PageHeader.astro'
 import { Heading } from 'accessible-astro-components'
 import { getCollection } from 'astro:content'
+import { sortEpisodesByRecency } from '../lib/sortEpisodes'
 
 const episodes = await getCollection('episodes')
-const sortedEpisodes = episodes.sort((a, b) => (a.data.episodeNumber ?? 0) - (b.data.episodeNumber ?? 0))
+const sortedEpisodes = sortEpisodesByRecency(episodes)
 
 const staticPages = [
   {

@@ -6,12 +6,12 @@ import { getCollection } from 'astro:content'
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { slugify } from '@utils/slugify'
-import { sortEpisodesByRecency } from '../../lib/sortEpisodes'
+import { sortEpisodesByRecency } from '../../../lib/sortEpisodes'
 
 export const getStaticPaths = (async ({ paginate }) => {
   const episodes = await getCollection('episodes')
 
-  const sortedEpisodes = sortEpisodesByRecency(episodes, 'newest')
+  const sortedEpisodes = sortEpisodesByRecency(episodes, 'oldest')
 
   const allTags = sortedEpisodes.flatMap((ep) => ep.data.tags)
   const uniqueTagLabels = [...new Set(allTags)].sort((a, b) => a.localeCompare(b))
@@ -35,7 +35,7 @@ const { page, uniqueTags } = Astro.props
 ---
 
 <DefaultLayout
-  title="Episodes"
+  title="Episodes (oldest first)"
   description="Listen to South Asian Women in Rare — stories, journeys, and insights from women navigating rare disease."
 >
   <PageHeader
@@ -43,5 +43,5 @@ const { page, uniqueTags } = Astro.props
     subtitle="Stories, journeys, and insights from South Asian women living with or supporting someone with a rare disease."
     bgType="gradient"
   />
-  <EpisodeListing page={page} uniqueTags={uniqueTags} order="newest" basePath="/episodes" />
+  <EpisodeListing page={page} uniqueTags={uniqueTags} order="oldest" basePath="/episodes/oldest" />
 </DefaultLayout>
